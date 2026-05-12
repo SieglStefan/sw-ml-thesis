@@ -1,6 +1,6 @@
 # from Reactant.jl documentation, adapted for time benchmarking for 1 training step
 
-using Reactant, Enzyme, Lux, BenchmarkTools
+using Reactant, Enzyme, BenchmarkTools
 
 # Define network
 function neural_net(x, w1, w2, b1, b2)
