@@ -1,6 +1,7 @@
 ### Structs and functions for the NeuralLinearLongwave Parameterization
 
 
+
 # Convenience container for the parameters of a NeuralLinearLongwave NN
 @kwdef struct NeuralLinearLongwaveConfig
     name::String = "default_name"           # name of model
@@ -12,8 +13,6 @@
     T_mean::Float32 = 249.83                # mean temperature for zscore, calculated in "zscore_calc_params.jl"
     T_std::Float32 =  23.09                 # temperature std for zscore, calculated in "zscore_calc_params.jl"
 end
-
-
 
 
 
@@ -89,8 +88,6 @@ Base.@propagate_inbounds function SpeedyWeather.parameterization!(ij, vars::Vari
 
     return nothing
 end
-
-
 
 
 

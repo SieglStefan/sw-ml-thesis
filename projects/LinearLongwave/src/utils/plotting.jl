@@ -1,6 +1,7 @@
 ### Utility functions for all kinds of plotting
 
 
+
 # Function for plotting the results of a calibration run. Plots the loss and the parameters a and b against calibration steps
 function plot_calibration(L, a, b)
 
