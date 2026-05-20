@@ -5,7 +5,7 @@ using Statistics, Random
 using CairoMakie
 
 # Include function for perturbing temperature fields
-include(joinpath(@__DIR__, "..", "src", "utils", "perturb_IC.jl"))
+include(joinpath(@__DIR__, "..", "src", "utils", "perturb_vars.jl"))
 
 # Define parameters for simulation
 const TRUNC = 31            # spectral grid truncation

@@ -1,4 +1,4 @@
-### Different loss functions
+### Different validation metrics
 
 
 

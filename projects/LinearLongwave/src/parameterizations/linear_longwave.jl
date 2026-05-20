@@ -3,7 +3,7 @@
 
 
 # Defines a parameterization scheme for linear longwave radiation: dT = a * T + b, where a and b are parameters of the scheme
-@kwdef struct LinearLongwave{NF} <: SpeedyWeather.AbstractLongwave
+@kwdef mutable struct LinearLongwave{NF} <: SpeedyWeather.AbstractLongwave
     a::NF = -1e-6
     b::NF = 1e-3
 end
