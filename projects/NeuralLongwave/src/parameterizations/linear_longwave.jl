@@ -33,6 +33,3 @@ Base.@propagate_inbounds function SpeedyWeather.parameterization!(ij, vars::Vari
 
     return nothing
 end
-
-
-

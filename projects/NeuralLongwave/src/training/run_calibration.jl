@@ -17,8 +17,8 @@ function calibration_step!(;radiation,
  
     # Calculate new parameters with gradient descent 
         # (multiplication with parameters at the end = normalizing learning rate eta)
-    a_new = radiation.a - eta * grads.a * radiation.a
-    b_new = radiation.b - eta * grads.b * radiation.a
+    a_new = radiation.a - eta * grads.a * abs(radiation.a)
+    b_new = radiation.b - eta * grads.b * abs(radiation.b)
 
     # Update radiation parameter
     radiation.a = a_new
@@ -36,7 +36,7 @@ end
 
 
 # Function for calibrating a LinearLongwave parameterization
-function run_calibration(   radiation_llw;          # to be calibrated NeuralLinearLongwave parameterization
+function run_calibration!(  radiation_llw;          # to be calibrated LinearLongwave parameterization
                             spectral_grid,          # defines truncation and number of vertical layers  
                             eta = 1f-4,             # learning rate
                             n_ic = 10,              # number of IC used
@@ -50,8 +50,7 @@ function run_calibration(   radiation_llw;          # to be calibrated NeuralLin
     sim_template = initialize!(model_template)
 
     # Extract timestepping
-    (; Δt, Δt_millisec) = model_template.time_stepping
-    dt = 2Δt
+    dt = 2 * getproperty(model_template.time_stepping, Symbol("Δt"))
 
     
     # Create loss and gradients containers
@@ -107,7 +106,7 @@ function run_calibration(   radiation_llw;          # to be calibrated NeuralLin
 
         # Prints information
         if printing_ic
-            println("Initial condition Nr. $i / $n_ic finished!, current loss: $loss")
+            println("Initial condition Nr. $i / $n_ic finished!, current loss: $(L[end])")
         end
 
     end

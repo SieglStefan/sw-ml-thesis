@@ -6,7 +6,7 @@
 function plot_calibration(L, a, b)
 
     # Plot for loss
-    p1 = plot(
+    p1 = Plots.plot(
         0:length(L)-1,
         L,
         yscale=:log10,              # loss plot gets special y-axis scaling
@@ -17,7 +17,7 @@ function plot_calibration(L, a, b)
     )
 
     # Plot for a
-    p2 = plot(
+    p2 = Plots.plot(
         0:length(a)-1,
         a,
         xlabel="Training step",
@@ -27,7 +27,7 @@ function plot_calibration(L, a, b)
     )
 
     # Plot for b
-    p3 = plot(
+    p3 = Plots.plot(
         0:length(b)-1,
         b,
         xlabel="Training step",
@@ -37,5 +37,5 @@ function plot_calibration(L, a, b)
     )
 
     # Plot the subplots
-    display(plot(p1, p2, p3, layout=(3,1)))
+    display(Plots.plot(p1, p2, p3, layout=(3,1)))
 end

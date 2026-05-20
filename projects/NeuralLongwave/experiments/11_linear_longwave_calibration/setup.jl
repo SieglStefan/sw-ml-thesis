@@ -3,4 +3,4 @@
 using Pkg
 Pkg.activate(joinpath(@__DIR__, "..", "..", "..", ".."))
 
-using NeuralLongwave
+include(joinpath(@__DIR__, "..", "..", "src", "NeuralLongwave.jl"))

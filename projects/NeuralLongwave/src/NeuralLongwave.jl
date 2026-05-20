@@ -9,6 +9,24 @@ using Random
 using JLD2
 using Plots
 
+export LinearLongwave,
+       NeuralLinearLongwave,
+       NeuralLinearLongwaveConfig,
+       create_sim_pair,
+       sim_pair_timestep!,
+       sim_pair_pullback!,
+       compute_gradients,
+       run_calibration!,
+       run_training!,
+       calibration_step!,
+       training_step!,
+       perturb_grid_temp!,
+       MSE,
+       zscore,
+       plot_calibration,
+       save,
+       load_neural_longwave
+
 
 
 # General utils

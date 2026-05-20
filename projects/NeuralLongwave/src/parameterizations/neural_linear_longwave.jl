@@ -40,6 +40,13 @@ function NeuralLinearLongwave(
     n_hidden = config.n_hidden
     act = config.activation
 
+    if config.activation == :tanh
+        act = tanh
+    else
+        @warn "Activation function not defined! tanh is used"
+        act = tanh
+    end
+
 
     # Create hidden layers and NN
     hidden = [Lux.Dense(width => width, act) for _ in 1:n_hidden]

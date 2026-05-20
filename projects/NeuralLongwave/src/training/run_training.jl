@@ -22,7 +22,7 @@ function training_step!(;radiation,
 
     # Print information about training for debugging
     if printing_step
-        println("Step $step, Loss=$loss)")
+        println("Step $step, Loss=$loss")
         @show grads
     end
 
@@ -37,10 +37,8 @@ function run_training!( radiation_nllw;                 # to be trained NeuralLi
                         n_ic = 10,                      # number of IC trained
                         n_steps = 100,                  # number of steps per IC trained 
                         n_gap = 10,                     # number of timesteps between 2 training points
-                        config,                         # configuration of the NN (number of hidden layers,...)
-                        rng = Random.default_rng(),     # randomness
                         printing_step = true,           # if true: loss,and grads are printed after every calibration step
-                        printing_ic = true)              # if true: loss is printed after every IC
+                        printing_ic = true)             # if true: loss is printed after every IC
 
     # Create template model and simulation
     model_template = PrimitiveWetModel(; spectral_grid)
