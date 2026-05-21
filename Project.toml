@@ -1,4 +1,5 @@
 [deps]
+AnalyticBandRadiation = "cd8119b0-1744-44d6-9ede-6ad1ad750b26"
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"

@@ -2,7 +2,7 @@
 
 julia_version = "1.10.11"
 manifest_format = "2.0"
-project_hash = "ccbcc9ba463181215e3aef14acaa1f45732551d0"
+project_hash = "4e8ce4f5318bc7de99b16ea6a838270272efd8fd"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "bbc22a9a08a0ef6460041086d8a7b27940ed4ffd"
@@ -58,6 +58,24 @@ deps = ["PtrArrays", "Random"]
 git-tree-sha1 = "9876e1e164b144ca45e9e3198d0b689cadfed9ff"
 uuid = "66dad0bd-aa9a-41b7-9441-69ab47430ed8"
 version = "1.1.3"
+
+[[deps.AnalyticBandRadiation]]
+deps = ["Adapt", "Dates", "DocStringExtensions"]
+git-tree-sha1 = "3b9d429481499cd1d3f2215df12cd1d72d27cb28"
+repo-rev = "main"
+repo-url = "https://github.com/NumericalEarth/AnalyticBandRadiation.jl"
+uuid = "cd8119b0-1744-44d6-9ede-6ad1ad750b26"
+version = "0.1.0"
+
+    [deps.AnalyticBandRadiation.extensions]
+    AnalyticBandRadiationBreezeExt = ["Breeze", "KernelAbstractions", "Oceananigans"]
+    AnalyticBandRadiationSpeedyWeatherExt = "SpeedyWeather"
+
+    [deps.AnalyticBandRadiation.weakdeps]
+    Breeze = "660aa2fb-d4c8-4359-a52c-9c057bc511da"
+    KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+    Oceananigans = "9e8cae18-63c1-5223-a75c-80ca9d6e9a09"
+    SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
 
 [[deps.Animations]]
 deps = ["Colors"]
@@ -412,9 +430,9 @@ version = "1.1.1+0"
 
 [[deps.ComponentArrays]]
 deps = ["Adapt", "ArrayInterface", "ChainRulesCore", "ConstructionBase", "Functors", "LinearAlgebra", "StaticArrayInterface", "StaticArraysCore"]
-git-tree-sha1 = "ce9d222dfc35f3608dc4dda9e8e150d06d2623bc"
+git-tree-sha1 = "f1a06f76838b660f135475ad6df9576b5d8d72b1"
 uuid = "b0b7db55-cfe3-40fc-9ded-d10e2dbeff66"
-version = "0.15.38"
+version = "0.15.39"
 
     [deps.ComponentArrays.extensions]
     ComponentArraysGPUArraysExt = "GPUArrays"
@@ -622,9 +640,9 @@ version = "1.0.7"
 
 [[deps.Enzyme]]
 deps = ["CEnum", "EnzymeCore", "Enzyme_jll", "GPUCompiler", "InteractiveUtils", "LLVM", "Libdl", "LinearAlgebra", "ObjectFile", "PrecompileTools", "Preferences", "Printf", "Random", "SparseArrays"]
-git-tree-sha1 = "d6dd65421104fa9f7d5cc37283a998937f359a39"
+git-tree-sha1 = "187a71b97ae9208f9ab063f4601c9de80f4a5892"
 uuid = "7da242da-08ed-463a-9acd-ee780be4f1d9"
-version = "0.13.138"
+version = "0.13.147"
 weakdeps = ["ADTypes", "BFloat16s", "ChainRulesCore", "GPUArraysCore", "LogExpFunctions", "SpecialFunctions", "StaticArrays"]
 
     [deps.Enzyme.extensions]
@@ -647,9 +665,9 @@ weakdeps = ["Adapt", "ChainRulesCore"]
 
 [[deps.Enzyme_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "TOML"]
-git-tree-sha1 = "4c22000e08aaa862526d9a41cfb7003e4002e653"
+git-tree-sha1 = "45a9d5854f5a94e98ad776c155a621b9a091751c"
 uuid = "7cc45869-7501-5eee-bdea-0790c847d4ef"
-version = "0.0.256+0"
+version = "0.0.261+0"
 
 [[deps.EpollShim_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -886,9 +904,9 @@ version = "0.2.0"
 
 [[deps.GPUCompiler]]
 deps = ["ExprTools", "InteractiveUtils", "LLVM", "Libdl", "Logging", "PrecompileTools", "Preferences", "Scratch", "Serialization", "TOML", "Tracy", "UUIDs"]
-git-tree-sha1 = "fedfe5e7db7035271c3f58359007f971da1dde87"
+git-tree-sha1 = "e9817f6e11bf985b4da0f16fd61476438776f3d2"
 uuid = "61eb1bfa-7361-4325-ad38-22787b887f55"
-version = "1.9.1"
+version = "1.13.1"
 
 [[deps.GPUToolbox]]
 deps = ["LLVM"]
@@ -1093,9 +1111,9 @@ weakdeps = ["ForwardDiff", "Unitful"]
 
 [[deps.IntervalArithmetic]]
 deps = ["CRlibm", "CoreMath", "MacroTools", "OpenBLASConsistentFPCSR_jll", "Printf", "Random", "RoundingEmulator"]
-git-tree-sha1 = "3e6273749a2df3a5c9067657510ad01ba5039a92"
+git-tree-sha1 = "921d7e91687e15a2c7c269c226960491fc041832"
 uuid = "d1acc4aa-44c8-5952-acd4-ba5d80a2a253"
-version = "1.0.8"
+version = "1.0.9"
 
     [deps.IntervalArithmetic.extensions]
     IntervalArithmeticArblibExt = "Arblib"
@@ -1245,9 +1263,9 @@ version = "4.1.0+0"
 
 [[deps.LLVM]]
 deps = ["CEnum", "LLVMExtra_jll", "Libdl", "PrecompileTools", "Preferences", "Printf", "Unicode"]
-git-tree-sha1 = "6884c216a5e3671990d245514aa94c67046b6e40"
+git-tree-sha1 = "0eeef733eebb4bb1464dd9d1d8c8f3ad20a090d1"
 uuid = "929cbde3-209d-540e-8aea-75f648917ca0"
-version = "9.8.1"
+version = "9.8.2"
 weakdeps = ["BFloat16s"]
 
     [deps.LLVM.extensions]
@@ -2129,9 +2147,9 @@ weakdeps = ["FixedPointNumbers"]
 
 [[deps.Reactant]]
 deps = ["Adapt", "BFloat16s", "CEnum", "Crayons", "Downloads", "EnumX", "Enzyme", "EnzymeCore", "FileWatching", "Functors", "GPUArraysCore", "GPUCompiler", "HTTP", "JSON", "LLVM", "LLVMOpenMP_jll", "Libdl", "LinearAlgebra", "OrderedCollections", "PrecompileTools", "Preferences", "PrettyTables", "ProtoBuf", "Random", "ReactantCore", "Reactant_jll", "ScopedValues", "Scratch", "Serialization", "Setfield", "Sockets", "StableRNGs", "StructUtils", "StyledStrings", "UUIDs", "p7zip_jll"]
-git-tree-sha1 = "04cc45cfc528afb8ef13355e75225fdeb363737b"
+git-tree-sha1 = "42a569da79bb08f0f535e7967b136f6982e29b09"
 uuid = "3c362404-f566-11ee-1572-e11a4b42c853"
-version = "0.2.253"
+version = "0.2.261"
 
     [deps.Reactant.extensions]
     ReactantAbstractFFTsExt = "AbstractFFTs"
@@ -2197,9 +2215,9 @@ version = "0.1.19"
 
 [[deps.Reactant_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "LazyArtifacts", "Libdl", "TOML"]
-git-tree-sha1 = "2749c35cb1bcc588ad71a50acf19108b9c6e47ed"
+git-tree-sha1 = "111a0c88a9956dd39456a2df6d8470064a0cc34b"
 uuid = "0192cb87-2b54-54ad-80e0-3be72ad8a3c0"
-version = "0.0.371+0"
+version = "0.0.379+0"
 
 [[deps.RecipesBase]]
 deps = ["PrecompileTools"]
@@ -2332,9 +2350,9 @@ version = "1.2.0"
 
 [[deps.SimpleTraits]]
 deps = ["InteractiveUtils", "MacroTools"]
-git-tree-sha1 = "be8eeac05ec97d379347584fa9fe2f5f76795bcb"
+git-tree-sha1 = "7ddb0b49c109481b046972c0e4ab02b2127d6a75"
 uuid = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
-version = "0.9.5"
+version = "0.9.6"
 
 [[deps.Sixel]]
 deps = ["Dates", "FileIO", "ImageCore", "IndirectArrays", "OffsetArrays", "REPL", "libsixel_jll"]
@@ -2384,9 +2402,9 @@ version = "0.1.4"
 
 [[deps.SpeedyWeather]]
 deps = ["AbstractFFTs", "Adapt", "AssociatedLegendrePolynomials", "Atomix", "BitInformation", "CodecZlib", "ComponentArrays", "Dates", "DocStringExtensions", "DomainSets", "Enzyme", "FFTW", "FastGaussQuadrature", "GPUArrays", "GenericFFT", "JLD2", "KernelAbstractions", "LinearAlgebra", "LowerTriangularArrays", "NCDatasets", "Primes", "Printf", "ProgressMeter", "Random", "ReactantCore", "RingGrids", "SpeedyTransforms", "SpeedyWeatherInternals", "Statistics", "StyledStrings", "TOML"]
-git-tree-sha1 = "e8b580bca645ea0e210455b096c03559a88e891b"
+git-tree-sha1 = "a3912021fcf13710bb22facb8a17ca72b255458e"
 uuid = "9e226e20-d153-4fed-8a5b-493def4f21a9"
-version = "0.19.0"
+version = "0.20.1"
 
     [deps.SpeedyWeather.extensions]
     SpeedyWeatherEnzymeExt = "Enzyme"
@@ -2394,12 +2412,14 @@ version = "0.19.0"
     SpeedyWeatherGeoMakieExt = "GeoMakie"
     SpeedyWeatherReactantExt = ["Reactant", "Dates"]
     SpeedyWeatherUnicodePlotsExt = "UnicodePlots"
+    SpeedyWeatherZarrExt = "Zarr"
 
     [deps.SpeedyWeather.weakdeps]
     FiniteDifferences = "26cc04aa-876d-5657-8c51-4c34ba976000"
     GeoMakie = "db073c08-6b98-4ee5-b6a4-5efafb3259c6"
     Reactant = "3c362404-f566-11ee-1572-e11a4b42c853"
     UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
+    Zarr = "0a941bbe-ad1d-11e8-39d9-ab76183a1d99"
 
 [[deps.SpeedyWeatherInternals]]
 deps = ["ComponentArrays", "ConstructionBase", "Dates", "DocStringExtensions", "DomainSets", "KernelAbstractions", "MacroTools", "ModelParameters", "StyledStrings"]
@@ -2847,9 +2867,9 @@ version = "1.4.7+0"
 
 [[deps.Xorg_xkeyboard_config_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_xkbcomp_jll"]
-git-tree-sha1 = "429722587208f02b1cecbddcd20133df2f1ed796"
+git-tree-sha1 = "ed349d26affcacafbc7fc2941ace1fb98f71e715"
 uuid = "33bec58e-1273-512f-9401-5d533626f822"
-version = "2.47.0+0"
+version = "2.47.0+1"
 
 [[deps.Xorg_xtrans_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
