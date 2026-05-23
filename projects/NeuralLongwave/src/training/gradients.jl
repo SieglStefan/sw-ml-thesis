@@ -2,13 +2,14 @@
 
 
 
-# Function for extracting gradients from a LinearLongwave parameterization
+# Helper function for extracting gradients from a LinearLongwave parameterization
 extract_gradients(::LinearLongwave, bmodel_rad) = (;a = bmodel_rad.longwave_radiation.a,
                                                     b = bmodel_rad.longwave_radiation.b)
 
 
-# Function for extracting gradients from a NeuralLinearLongwave parameterization
+# Helper function for extracting gradients from a NeuralLinearLongwave parameterization
 extract_gradients(::NeuralLinearLongwave, bmodel_rad) = bmodel_rad.longwave_radiation.ps
+
 
 
 # Function for computing gradients with Enzyme.autodiff.
@@ -22,9 +23,9 @@ function compute_gradients(vars0, sim_target, sim_train, dt)
     T_train = sim_train.variables.grid.temperature
     N = length(T_train)
 
+
     # Copy initial variables, so they do not get changed by timestep!()
     vars_ad = deepcopy(vars0)
-
 
     # Create variables gradients container and seed MSE
     bvars_ad = make_zero(vars_ad)
@@ -46,8 +47,8 @@ function compute_gradients(vars0, sim_target, sim_train, dt)
     # Extract gradients
     grads = extract_gradients(model_ad.longwave_radiation, bmodel_ad)  
     
-    # Calculate MSE loss
-    L = MSE(T_train, T_target)
+    # Calculate RMSE loss
+    L = rmse(T_train, T_target)
 
     return L, grads
 end
