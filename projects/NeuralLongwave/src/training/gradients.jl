@@ -36,12 +36,12 @@ function compute_gradients(vars0, sim_target, sim_train, dt)
     bmodel_ad = make_zero(model_ad)
 
     # Differentiate timestep!() in reverse mode
-    autodiff(Reverse,
-            SpeedyWeather.timestep!, 
-            Const,                                 
-            Duplicated(vars_ad, bvars_ad),         
-            Const(dt),                            # timestep does not change
-            Duplicated(model_ad, bmodel_ad))      
+    Enzyme.autodiff(Reverse,
+                    SpeedyWeather.timestep!, 
+                    Const,                                 
+                    Duplicated(vars_ad, bvars_ad),         
+                    Const(dt),                            # timestep does not change
+                    Duplicated(model_ad, bmodel_ad))      
        
 
     # Extract gradients

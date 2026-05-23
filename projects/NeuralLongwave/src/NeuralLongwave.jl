@@ -9,27 +9,42 @@ using Random
 using JLD2
 using Plots
 
-export LinearLongwave,
-       NeuralLinearLongwave,
-       NeuralLinearLongwaveConfig,
-       create_sim_pair,
-       sim_pair_timestep!,
-       sim_pair_pullback!,
-       compute_gradients,
-       run_calibration!,
-       run_training!,
-       calibration_step!,
-       training_step!,
-       perturb_grid_temp!,
-       MSE,
-       zscore,
-       plot_calibration,
-       plot_loss,
-       plot_rmse_diff,
-       plot_bias_diff,
-       plot_correlation_diff,
-       save,
-       load_neural_longwave
+export  
+        # utils (without io)
+        zscore,
+        rmse,
+        bias,
+        correlation,
+        plot_calibration,
+        plot_loss,
+        plot_rmse_diff,
+        plot_bias_diff,
+        plot_correlation_diff,
+
+        # parameterizations
+        LinearLongwave,
+        NeuralLinearLongwaveConfig,
+        NeuralLinearLongwave,
+
+        # io
+        save,
+        load_neural_longwave,
+
+        # training
+        create_template,
+        propagate_reference!,
+        create_sim_pair,
+        sim_pair_pullback!,
+        sim_pair_timestep!,
+        extract_parameters,
+        run_online_optimization!,
+        extract_gradients,
+        compute_gradients,
+        calibration_step!,
+        run_calibration!,
+        training_step!
+        run_training!
+
 
 
 

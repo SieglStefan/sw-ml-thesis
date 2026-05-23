@@ -18,7 +18,7 @@ end
 
 
 
-# 
+# Propafates the reference simulation for n_gap timesteps
 function propagate_reference!(sim_ref, n_gap)
     for _ in 1:n_gap
         SpeedyWeather.later_timestep!(sim_ref)
