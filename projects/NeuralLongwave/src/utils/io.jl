@@ -1,42 +1,47 @@
-### Functions for saving and loading data
+### IO utilities
+###
+### Helper functions for saving and loading NeuralLinearLongwave
+### parameterizations using JLD2.
 
 
 
-# Function for saving a NeuralLinearLongwave model using JLD2
-function save(; path::String, para::NeuralLinearLongwave)
+# Save a neural longwave parameterization using JLD2
+function save_neural_longwave(; path::String, radiation::AbstractNeuralLinearLongwave)
     
-    # Create folder and create file path
+    # Create folder, create file path and save data
     mkpath(path)
-    filepath = joinpath(path, para.config.name * ".jld2")
-    
-    # Save it
+    filepath = joinpath(path, radiation.config.name * ".jld2")
+
     JLD2.jldsave(
-        filepath;  
-        config = para.config,
-        ps = para.ps,
-        st = para.st,
+        filepath;
+        config = radiation.config,
+        ps = radiation.ps,
+        st = radiation.st,
     )
 
     return filepath
 end
 
 
-# Function for loading a NeuralLinearLongwave model
+
+# Load a neural longwave parameterization as Lux inference version
 function load_neural_longwave(; path::String, name::String, SG::SpeedyWeather.SpectralGrid)
     
-    # Create file path and load data
+    # Create file path and load and extract data
     filepath = joinpath(path, name * ".jld2")
     data = JLD2.load(filepath)
 
-    # Extract data
     config = data["config"]
     ps = data["ps"]
     st = data["st"]
 
-    # Create temporary NeuralLinearLongwave (NN is empty)
-    tmp = NeuralLinearLongwave(SG; config=config)
+    # Rebuild matching Lux architecture
+    tmp = NeuralLinearLongwave(SG; config)
 
-    # Return initialized NLL
-    return NeuralLinearLongwave(tmp.nn, ps, st, config)
-
+    return NeuralLinearLongwave(;
+        nn = tmp.nn,
+        ps,
+        st,
+        config,
+    )
 end

@@ -1,0 +1,54 @@
+### Data generation utilities
+###
+### Helper functions for sampling temperature fields from SpeedyWeather
+### simulations. Used mainly for offline testing, plotting, or validation.
+
+
+
+# Generate a series of temperature fields from a model
+function generate_temperature_fields(
+    model_base,             # base model used for spinup
+    model_data;             # data model used for generating temperature fields
+    t_spinup = 14,          # spinup time in days
+    t_sim = 1,              # simulation time in days
+    save_every = 1,         # save every n timesteps
+)
+
+    # Create and spin up base simulation
+    sim_base = SpeedyWeather.initialize!(model_base_copy)
+    run!(sim_base, period = Day(t_spinup))
+
+    # Create data simulation from spun-up base state
+    sim_data = SpeedyWeather.initialize!(model_data_copy)
+    copy!(sim_data.variables, sim_base.variables)
+
+
+    # Extract timestep size
+    Δt_sec = model_data_copy.time_stepping.Δt_sec
+
+    # Compute number of timesteps and saved datapoints
+    n_steps = Int(round(t_sim * 24 * 3600 / Δt_sec))
+    n_data = Int(floor(n_steps / save_every))
+
+    @info "Generated $n_data datapoints with temporal distance of $(save_every * Δt_sec) seconds!"
+
+
+    # Container for saved temperature fields
+    T = Vector{typeof(sim_data.variables.grid.temperature)}()
+
+    # Initialize simulation and perform first startup timestep
+    SpeedyWeather.initialize!(sim_data, steps = n_steps + 1)
+    SpeedyWeather.first_timesteps!(sim_data)
+
+    
+    # Run simulation and save temperature fields
+    for step in 1:n_steps
+        SpeedyWeather.timestep!(sim_data)
+
+        if step % save_every == 0
+            push!(T, copy(sim_data.variables.grid.temperature))
+        end
+    end
+
+    return T
+end

@@ -1,6 +1,12 @@
 ### General utility functions
+###
+### Small helper functions used across scripts and analysis code.
 
 
 
-# Utility function for calculating the z-transformation of the input x
-zscore(x, µ, σ) = (x .- µ) ./ σ
+# Calculate the z-score transformation of x
+zscore(x, μ, σ) = (x .- μ) ./ σ
+
+
+# Extract vertical layer k from a series of temperature fields
+extract_layer(k, T) = [Ti[:, k] for Ti in T]

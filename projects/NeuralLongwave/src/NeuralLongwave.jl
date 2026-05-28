@@ -1,50 +1,56 @@
 module NeuralLongwave
 
+
 using SpeedyWeather
+
 using Lux
 using Optimisers
+
 using Enzyme
+using Checkpointing
 
 using Random
 using JLD2
+using Dates
+using Statistics
+
 using Plots
+using CairoMakie
+using GeoMakie
+using RingGrids
+
 
 export  
         # utils (without io)
         zscore,
+        extract_layer,
         rmse,
         bias,
         correlation,
+        maxdiff,
         plot_calibration,
+        plot_training,
         plot_loss,
-        plot_rmse_diff,
-        plot_bias_diff,
-        plot_correlation_diff,
+        plot_comparison,
+        plot_heatmap,
+        plot_heatmaps,
+        perturb_grid_temp!,
+        generate_temperature_fields,
 
         # parameterizations
-        LinearLongwave,
+        ConstLinearLongwave,
         NeuralLinearLongwaveConfig,
+        NeuralLinearLongwaveAD,
         NeuralLinearLongwave,
 
         # io
-        save,
+        save_neural_longwave,
         load_neural_longwave,
 
-        # training
-        create_template,
-        propagate_reference!,
-        create_sim_pair,
-        sim_pair_pullback!,
-        sim_pair_timestep!,
-        extract_parameters,
-        run_online_optimization!,
-        extract_gradients,
-        compute_gradients,
-        calibration_step!,
+        # optimization
         run_calibration!,
-        training_step!
-        run_training!
-
+        run_training!,
+        run_optimization!
 
 
 
@@ -53,23 +59,27 @@ include("utils/utils.jl")
 include("utils/metrics.jl")
 include("utils/plotting.jl")
 include("utils/perturb_vars.jl")
+include("utils/data.jl")
 
 
 # Structs / Parameterizations
-include("parameterizations/linear_longwave.jl")
-include("parameterizations/neural_linear_longwave.jl")
+include("parameterizations/abstract_longwave.jl")
+include("parameterizations/const_llw.jl")
+include("parameterizations/neural_llw_common.jl")
+include("parameterizations/neural_llw_ad.jl")
+include("parameterizations/neural_llw.jl")
 
 
-# IO
+# IO and printing
 include("utils/io.jl")
+include("utils/printing.jl")
 
 
 # Training infrastructure
-include("training/simulation.jl")
-include("training/online_optimization.jl")
-include("training/gradients.jl")
-include("training/run_calibration.jl")
-include("training/run_training.jl")
+include("optimization/simulation_handling.jl")
+include("optimization/optimization_online.jl")
+include("optimization/gradients.jl")
+include("optimization/run_scheme.jl")
 
 
 end
