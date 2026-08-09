@@ -60,6 +60,18 @@ end
 
 
 
+# Force the semi-implicit operators to be rebuilt from the CURRENT state.
+#   - reinitialize! skips the rebuild whenever the time step is unchanged, so the operators
+#     otherwise stay linearized around whatever state the simulation happened to be in when
+#     first_steps! ran — for a fresh model that is the analytic initial condition, not the
+#     reference climate. Different linearization = different trajectory.
+function force_reinitialize!(sim)
+    sim.model.implicit.Δt[] = 0
+    SpeedyWeather.reinitialize!(sim.model, sim.variables)
+    return nothing
+end
+
+
 # Initialize a simulation and do a first step (to initialize implicit solver)
 function first_steps!(sim; planned_steps = 2)
 

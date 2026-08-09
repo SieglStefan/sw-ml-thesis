@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launch a training/calibration job (from repo root):
-#   bash scripts/training/launch.sh <script-name-without-.jl> [ARRAY]
-#   bash scripts/training/launch.sh 1_constLW 0-7
+#   bash scripts/training/launch.sh training [ARRAY]
+#   bash scripts/training/launch.sh training 0-7
 #
 SCRIPT=${1:?"Usage: ./scripts/training/launch.sh <name-without-.jl> [ARRAY]"}
 

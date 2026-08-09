@@ -4,13 +4,13 @@
 ###     stats.jld2                  the statistics (below)
 ###     plots/                      histograms + regression fits
 ###
-### Structure of `data = load_zscore(name)` — every leaf is (; mean, std):
+### Structure of `data = load_zscore(name)` - every leaf is (; mean, std):
 ###
 ###     data.inputs.T       profile -> Vector(nlayers),  e.g. data.inputs.T.mean
 ###     data.inputs.Ts      scalar  -> Vector(1),        e.g. data.inputs.Ts.std[1]
 ###     data.direct         .dT (nlayers), .olw, .slwd
 ###     data.linear         .a .b (nlayers), .c .d .e .f .g  - fitted on centered T
-###                         .center.T (nlayers), .center.Ts (1) — subtract before applying
+###                         .center.T (nlayers), .center.Ts (1) - subtract before applying
 ###     data.planck         same as .linear, fitted on T^4
 ###     data.nlayers, data.trunc
 ###
@@ -122,7 +122,7 @@ function collect_samples(
             
             idx += 1
 
-            # Propagate only if another sample follows — the last block would be discarded
+            # Propagate only if another sample follows - the last block would be discarded
             sample < n_per_ic && sim_timesteps!(sim, n_gap)
 
         end

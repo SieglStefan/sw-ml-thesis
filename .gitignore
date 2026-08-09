@@ -1,10 +1,12 @@
 # Local scratch / experiments, not part of the repo
 .claude/
 results_OLD/
+results_OLD_2/
 sandbox/
 slurm_logs/
 commands_hpc.toml
+sync.sh
 
 # Reference data is 10+ GB - synced via rsync, not git
 data/reference/*
-!data/reference/info.toml
+!data/reference/README.toml

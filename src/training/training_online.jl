@@ -95,11 +95,15 @@ function training_online(;
 
             # Set target variables to reference variables
             copy!(sims.target.variables, vars0)
+            # Force reinitialization
+            force_reinitialize!(sims.target)
             # Propagate target simulation for gradient computation
             sim_timesteps!(sims.target, n_steps)
 
             # Set training variables to reference variables
             copy!(sims.train.variables, vars0)
+            # Force reinitialization
+            force_reinitialize!(sims.train)
             # Propagate training simulation for gradient computation
             sim_timesteps!(sims.train, n_steps)
 

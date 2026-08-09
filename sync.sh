@@ -21,9 +21,19 @@ REMOTE=hpc:/p/tmp/stefansi/NeuralParam.jl
 LOCAL="$(cd "$(dirname "$0")" && pwd)"
 
 EXCLUDES=(
+  --exclude '.claude/'
   --exclude '.git/'
   --exclude 'data/reference/'
   --exclude 'evaluation/'
+  --exclude 'results_OLD/'
+  --exclude 'results_OLD_2/'
+  --exclude 'sandbox/'
+  --exclude 'slurm_logs/'
+  --exclude 'tests/'  
+  --exclude '.gitignore' 
+  --exclude 'commands_hpc.toml' 
+  --exclude 'README.md' 
+  --exclude 'sync.sh' 
 )
 
 # -i lists one line per changed item; --omit-dir-times stops directories

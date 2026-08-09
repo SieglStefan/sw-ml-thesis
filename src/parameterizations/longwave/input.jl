@@ -50,8 +50,6 @@ const INPUTS = (;
 # Function for selecting a set of inputs from the dictionary
 input_spec(names::Symbol...) = NamedTuple{names}(map(n -> INPUTS[n], names))
 
-# Predefined default selection for different use-cases
-const INPUT_NLW_OBLW = input_spec(:T, :Ts, :lat)
 
 
 

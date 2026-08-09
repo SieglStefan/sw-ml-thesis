@@ -35,23 +35,25 @@ const ROOT = normpath(joinpath(@__DIR__, "..", ".."))
 # Define paths for difference data folders
 reference_dir(parts...) = joinpath(ROOT, "data", "reference", parts...)     # reference data sets for training and testing
 stats_dir(parts...)    = joinpath(ROOT, "data", "stats", parts...)        # statistics used for zscore
-scheme_dir(parts...)    = joinpath(ROOT, "results", "schemes", parts...)    # calibrated and trained schemes
-rollout_dir(parts...)   = joinpath(ROOT, "results", "rollouts", parts...)   # generated rollouts for evaluation and testing
+scheme_dir(exp, parts...)    = joinpath(ROOT, "results", exp, "schemes", parts...)    # calibrated and trained schemes
+rollout_dir(exp, parts...)   = joinpath(ROOT, "results", exp, "rollouts", parts...)   # generated rollouts for evaluation and testing
 
 
 # Utility functions for collecting and loading multiple schemes and rollouts
-collect_schemes(names)  = (; (Symbol(n) => load(; dir=scheme_dir(n),  file="scheme.jld2")  for n in names)...)
-collect_rollouts(names) = (; (Symbol(n) => load(; dir=rollout_dir(n), file="rollout.jld2") for n in names)...)
+collect_schemes(exp, names)  = (; (Symbol(n) => load(; dir=scheme_dir(exp, n),  file="scheme.jld2")  for n in names)...)
+collect_rollouts(exp, names) = (; (Symbol(n) => load(; dir=rollout_dir(exp, n), file="rollout.jld2") for n in names)...)
 
 
-# Utility functions for resolving schemes
-resolve_scheme(name::String) = load(; dir=scheme_dir(name), file="scheme.jld2")
-resolve_scheme(scheme)       = scheme
 
-# Utility functions for scheme names
-scheme_name(name::AbstractString) = name
-scheme_name(::Nothing)            = "none"
-scheme_name(scheme)               = string(nameof(typeof(scheme)))
+# Utility functions for defining infos of target schemes
+function info_scheme(scheme::OneBandLongwave)
+    return (;
+        scheme          = "OneBandLongwave",
+        transmissivity  = string(nameof(typeof(scheme.transmissivity))),
+        em_ocean        = scheme.radiative_transfer.emissivity_ocean,
+        em_land         = scheme.radiative_transfer.emissivity_land,
+    )
+end
 
 
 
@@ -112,11 +114,9 @@ end
 
 
 
-
-
 ### Lazily-read reference dataset: one full model state per simulated day
 struct Reference{S}
-    store::S            # open .jld2 file — states are read on demand, not held in RAM
+    store::S            # open .jld2 file - states are read on demand, not held in RAM
     sim_days::Int       # last available day; valid days are 0:sim_days
 end
 

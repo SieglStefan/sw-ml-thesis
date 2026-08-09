@@ -4,6 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
+#SBATCH --mem=64G
 #SBATCH --time=08:00:00
 
 set -euo pipefail
@@ -18,4 +19,4 @@ export OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 export JULIA_NUM_THREADS=1
 
 echo "Host $(hostname) | Task ${SLURM_ARRAY_TASK_ID:-0}"
-julia --project=. scripts/reference/generate_reference.jl
+julia --project=. scripts/reference/reference.jl

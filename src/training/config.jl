@@ -16,6 +16,8 @@
 
     eta0::Float32 = 1f-2                                # initial learning rate
     eta_decay::Float32 = 0.8f0                          # learning rate decay after an ic
+    clip_norm::Float32 = 1f0                            # clip norm for gradients
+    weight_decay::Float32 = 1f-3                        # weight decay for parameters
     loss_config::LossConfig                             # weighting and normalization of the loss
 
     t_spinup::Period = Day(30)                          # spinup time before training

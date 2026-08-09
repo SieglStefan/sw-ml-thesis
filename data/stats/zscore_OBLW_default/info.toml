@@ -1,8 +1,8 @@
 [general]
-created = 2026-08-08T16:13:44.752Z
+created = 2026-08-09T21:08:59.500Z
 julia = "1.10.11"
 name = "zscore_OBLW_default"
-seed = 1234
+seed = 3
 sw_vers = "0.21.1+DEV"
 
 [grid]
@@ -16,11 +16,12 @@ groups = ["direct", "linear", "planck"]
 inputs = ["T", "q", "p", "lat", "lf", "sst", "lst", "Ts"]
 keys = ["DirectOutput: dT, olw, slwd", "LinearOutput: a, b, c, d, e, f, g", "PlanckOutput: a, b, c, d, e, f, g"]
 
-[model_type]
-emissivity_land = 0.9800000190734863
-emissivity_ocean = 0.9800000190734863
-lw_scheme = "OneBandLongwave"
+[model]
+co2 = 280.0
+em_land = 0.9800000190734863
+em_ocean = 0.9800000190734863
 model = "PrimitiveWetModel"
+scheme = "OneBandLongwave"
 transmissivity = "FriersonLongwaveTransmissivity"
 
 [perturbation]

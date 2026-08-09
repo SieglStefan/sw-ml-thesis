@@ -1,9 +1,9 @@
 ### Script for calculating zscore stats for a OneBandLongwave (LW) target scheme
 ###
 ### Objective: Calculate statistics for:
-### - input variables:    T, q, p, lat, lf, sst, lst, Ts
-### - direct outputs:     dT, olw, slwd
-### - linear outputs:     a, b (per layer), c, d, e (olw), f, g (slwd)
+### - input variables:      T, q, p, lat, lf, sst, lst, Ts
+### - direct outputs:       dT, olw, slwd
+### - regression outputs:   a, b (per layer), c, d, e (olw), f, g (slwd)
 ###
 ### Additionally:
 ###     - stores meta data of creation of stats at info.toml
@@ -20,17 +20,24 @@ using Random
 
 
 
-### Define spectral grid
-TRUNC = 31
-NLAYERS = 8
-SG = SpectralGrid(trunc=TRUNC, nlayers=NLAYERS)
-
-
-
 ### Define parameters for sampling
+
 # General
 NAME        = "zscore_OBLW_default"     # name of statistics
-SEED        = 1234                      # seed used
+SEED        = 3                         # seed used
+
+# Spectral grid
+TRUNC       = 31                        # truncation of spectral grid
+NLAYERS     = 8                         # number of vertical layers
+
+# Model and parameters
+MODEL = PrimitiveWetModel               # used SW model
+EM_OCEAN    = 0.98f0                    # ocean emissivity
+EM_LAND     = 0.98f0                    # land emissivity
+CO2         = 280f0                     # CO2 concentration in ppm
+
+# Target scheme
+LW_SCHEME   = :OBLW                     # used LW scheme (OBLW or ABR)
 
 # Sampling
 T_SPINUP    = Day(30)                   # spinup time
@@ -43,30 +50,36 @@ SAMPLE_GAP  = 3.65                      # days between sampling
 FAC_PERT_T  = 2f0                       # temperature perturbation amplitude
 FAC_PERT_Q  = 0.2f0                     # humidity perturbation amplitude (multiplicative)
 
-# Output forms: one stats group is fitted per form, keyed by output_group(form)
+# Output forms (for fitting parameters)
 OUTPUT_FORMS = (DirectOutput(), LinearOutput(), PlanckOutput())
 
-# Surface emissivity
-EM_OCEAN    = 0.98f0
-EM_LAND     = 0.98f0
-
-# Model and scheme
-MODEL       = PrimitiveWetModel
-LW_SCHEME   = OneBandLongwave(SG;
-    transmissivity     = FriersonLongwaveTransmissivity(SG),
-    radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
-                            emissivity_ocean = EM_OCEAN,
-                            emissivity_land  = EM_LAND),
-)
 
 
 
-### Prepare generation
+### Prepare output, seeding an spectral grid
 # Create output folder
 DIR = prepare_out_dir(stats_dir(), NAME)
 
 # Set seed for reproducability
 Random.seed!(SEED)
+
+# Spectral grid
+SG = SpectralGrid(trunc = TRUNC, nlayers = NLAYERS)
+
+
+
+### Define LW scheme
+if LW_SCHEME == :OBLW
+    lw_scheme = OneBandLongwave(SG;
+        transmissivity     = FriersonLongwaveTransmissivity(SG),
+        radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
+                                emissivity_ocean = EM_OCEAN,
+                                emissivity_land  = EM_LAND
+        ),
+    )
+else 
+    error("Unknown reference scheme type: $LW_SCHEME")
+end
 
 
 
@@ -78,7 +91,7 @@ zs = generate_zscore(;
     seed            = SEED,
 
     model           = MODEL,
-    lw_scheme       = LW_SCHEME,
+    lw_scheme       = lw_scheme,
 
     output_forms    = OUTPUT_FORMS,
 
@@ -94,17 +107,46 @@ zs = generate_zscore(;
 
 
 
+
+
 ### Create and store info.toml file
 write_info(;
     dir = DIR,
     file = "info.toml",
 
     general = (;
-        name    = NAME,
-        created = now(),
-        seed    = SEED,
-        julia   = string(VERSION),
-        sw_vers = string(pkgversion(SpeedyWeather)),
+        name             = NAME, 
+        created          = now(), 
+        seed             = SEED,
+        julia            = string(VERSION), 
+        sw_vers          = string(pkgversion(SpeedyWeather)),
+    ),
+
+    grid = (;
+        trunc            = TRUNC,
+        nlayers          = NLAYERS,
+        grid_type        = string(nameof(SG.Grid)),
+    ),
+
+    model = (;
+        model            = string(nameof(MODEL)),
+        em_ocean         = EM_OCEAN,
+        em_land          = EM_LAND,
+        co2              = CO2,   
+        info_scheme(lw_scheme)...,
+    ),
+
+    sampling = (;
+        t_spinup         = string(T_SPINUP),
+        start_date       = string(START_DATE),
+        n_ic             = N_IC,
+        sim_time         = SIM_TIME,
+        sample_gap       = SAMPLE_GAP,
+    ),
+
+    perturbation = (;
+        fac_pert_t = FAC_PERT_T,
+        fac_pert_q = FAC_PERT_Q,
     ),
 
     io = (;
@@ -114,32 +156,5 @@ write_info(;
                    for f in OUTPUT_FORMS],
         forms   = ["affine: dT = a + b*P(T)", "olw = c + d*P(T[nlayers÷2]) + e*P(Ts)",
                    "slwd = f + g*P(T[nlayers])", "P = identity (linear) or x^4 (planck)"],
-    ),
-
-    grid = (;
-        trunc     = TRUNC,
-        nlayers   = NLAYERS,
-        grid_type = string(nameof(SG.Grid)),
-    ),
-
-    model_type = (;
-        model            = string(nameof(MODEL)),
-        lw_scheme        = string(nameof(typeof(LW_SCHEME))),
-        transmissivity   = string(nameof(typeof(LW_SCHEME.transmissivity))),
-        emissivity_ocean = LW_SCHEME.radiative_transfer.emissivity_ocean,
-        emissivity_land  = LW_SCHEME.radiative_transfer.emissivity_land,
-    ),
-
-    sampling = (;
-        t_spinup   = string(T_SPINUP),
-        start_date = string(START_DATE),
-        n_ic       = N_IC,
-        sim_time   = SIM_TIME,
-        sample_gap = SAMPLE_GAP,
-    ),
-
-    perturbation = (;
-        fac_pert_t = FAC_PERT_T,
-        fac_pert_q = FAC_PERT_Q,
     ),
 )

@@ -28,7 +28,7 @@ if first(r.heatmap_days) == 0
 end
 
 
-### Metric curves — one .png per metric into DIR/plots
+### Metric curves - one .png per metric into DIR/plots
 figs = plot_rollout_metrics(; rollouts, dir = PLOTS, probes = (:T, :olw, :slwd, :slwu))
 figs.rmse       # display in the REPL; also figs.bias, figs.maxdiff, figs.mean
 
@@ -41,7 +41,7 @@ figs.rmse       # display in the REPL; also figs.bias, figs.maxdiff, figs.mean
 @show rollout_curve(r, :T,    :mean)            # drift of the rollout itself
 
 
-### Heatmaps — one figure per heatmap day
+### Heatmaps - one figure per heatmap day
 hm_T    = plot_rollout_heatmaps(; rollouts, var = :T, layer = 8)
 hm_olw  = plot_rollout_heatmaps(; rollouts, var = :olw)
 hm_slwd = plot_rollout_heatmaps(; rollouts, var = :slwd)

@@ -15,7 +15,6 @@ const FIELD_COLORS = (;
     T     = :firebrick,
     olw   = :steelblue,
     slwd  = :rebeccapurple,
-    slwu  = :darkorange,
 )
 
 # Utility function for not-breaking the axis for log10 plots
@@ -177,7 +176,7 @@ function plot_metrics_norm(; dir="", file="", weights=nothing, plot_kwargs = (;)
 
     # Normalized rmse (in units of the field's std)
     p2 = Plots.plot(df.nrmse_T;
-        ylabel = "norm. RMSE [T_scale/_σ]", yscale = log_or_lin(df.nrmse_T), lw = 2,
+        ylabel = "norm. RMSE [T_scale/σ]", yscale = log_or_lin(df.nrmse_T), lw = 2,
         label = "T", color = FIELD_COLORS.T)
     Plots.plot!(p2, df.nrmse_olw;  lw = 2, label = "olw",  color = FIELD_COLORS.olw)
     Plots.plot!(p2, df.nrmse_slwd; lw = 2, label = "slwd", color = FIELD_COLORS.slwd)
@@ -185,7 +184,7 @@ function plot_metrics_norm(; dir="", file="", weights=nothing, plot_kwargs = (;)
 
     # Normalized bias (in units of the field's std)
     p3 = Plots.plot(df.nbias_T;
-        xlabel = "Training step", ylabel = "norm. bias [T_scale/_σ]", lw = 2,
+        xlabel = "Training step", ylabel = "norm. bias [T_scale/σ]", lw = 2,
         label = "T", color = FIELD_COLORS.T)
     Plots.plot!(p3, df.nbias_olw;  lw = 2, label = "olw",  color = FIELD_COLORS.olw)
     Plots.plot!(p3, df.nbias_slwd; lw = 2, label = "slwd", color = FIELD_COLORS.slwd)

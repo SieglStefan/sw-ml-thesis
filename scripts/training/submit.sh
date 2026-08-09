@@ -4,7 +4,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
+#SBATCH --mem=64G
 #SBATCH --time=08:00:00
+
 set -euo pipefail
 
 SCRIPT=${1:?"Usage: sbatch --array=... scripts/training/submit.sh <name-without-.jl>"}

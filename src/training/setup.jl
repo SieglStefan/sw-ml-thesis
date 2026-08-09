@@ -12,9 +12,9 @@ function setup_optimiser(tc; ps)
 
     # Setup Optimiser rule
     rule = Optimisers.OptimiserChain(
-        Optimisers.ClipNorm(1f0),           # ClipNorm for stability (limits gradients)
-        Optimisers.WeightDecay(1f-2),       # WeightDecay for stability (limits parameters)
-        Optimisers.Adam(eta),               # Adam optimiser with learning rate eta
+        Optimisers.ClipNorm(tc.clip_norm),              # ClipNorm for stability (limits gradients)
+        Optimisers.WeightDecay(tc.weight_decay),        # WeightDecay for stability (limits parameters)
+        Optimisers.Adam(eta),                           # Adam optimiser with learning rate eta
     )
 
     # Define optimiser state

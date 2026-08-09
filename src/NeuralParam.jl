@@ -58,6 +58,7 @@ export
                 steps_from_days,
                         #days_from_steps,
                 perturb_grid_field!,
+                force_reinitialize!,
                 first_steps!,
                 sim_timesteps!,
 
@@ -73,8 +74,7 @@ export
                 rollout_dir,
                 collect_schemes,
                 collect_rollouts,
-                        #resolve_scheme,
-                scheme_name,
+                info_scheme,
                         #_toml,
                 write_info,
                 prepare_out_dir,
@@ -92,6 +92,7 @@ export
                 generate_reference,
         # generate/generate_rollout.jl
                 DEF_PROBES,
+                        #DEF_PROBE_UNITS,
                         #sample_trajectory,
                         #n_cols,
                         #get_col,
@@ -138,7 +139,6 @@ export
                         #in_Ts,
                 INPUTS,
                 input_spec,
-                INPUT_NLW_OBLW,
                         #n_inputs,
                         #input_layout,
                         #fill_inputs!,
@@ -161,7 +161,7 @@ export
         # scheme_const.jl
                 ConstLW,
                         #update_ps,
-                info_scheme,
+                        #info_scheme,
         # scheme_neural.jl
                 NeuralLW,
                         #update_ps,
@@ -211,15 +211,14 @@ export
 
 
         ### evaluation
-        # rollout.jl
-                        #DEF_PROBE_UNITS,
+        # evaluate_rollout.jl
                         #reduce_cols,
                 rollout_curve,
                 plot_rollout,
                 plot_rollout_metrics,
                         #hm_field,
                 plot_rollout_heatmaps,
-        # benchmark.jl
+        # evaluate_benchmark.jl
                 evaluate_benchmark,
                 print_benchmark
 
@@ -273,8 +272,8 @@ include("training/run_training.jl")
 
 
 # Evaluation infrastructure
-include("evaluation/rollout.jl")
-include("evaluation/benchmark.jl")
+include("evaluation/evaluate_rollout.jl")
+include("evaluation/evaluate_benchmark.jl")
 
 
 end

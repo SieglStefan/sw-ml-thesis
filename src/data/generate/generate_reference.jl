@@ -64,7 +64,7 @@ function generate_reference(;
             # Propagate simulation for one day
             sim_timesteps!(sim, steps_per_day)
 
-            # Save the full state — restart point and verification data in one
+            # Save the full state - restart point and verification data in one
             store["day_$(day)"] = SpeedyWeather.materialize_views(sim.variables)
         end
 

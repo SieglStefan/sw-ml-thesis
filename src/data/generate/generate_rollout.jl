@@ -20,10 +20,10 @@ const DEF_PROBES = (;
     T    = v -> SpeedyWeather.get_step(v.grid.temperature),
     olw  = v -> v.parameterizations.outgoing_longwave,
     slwd = v -> v.parameterizations.surface_longwave_down,
-    slwu = v -> v.parameterizations.surface_longwave_up,
 )
 # Units of the default probes, for axis labels
-const DEF_PROBE_UNITS = (; T = "K", olw = "W/m²", slwd = "W/m²", slwu = "W/m²")
+const DEF_PROBE_UNITS = (; T = "K", olw = "W/m²", slwd = "W/m²")
+
 
 
 # Function for sampling probes along a trajectory of sim, starting with initial_condition
@@ -31,12 +31,20 @@ function sample_trajectory(
     sim,
     probes,
     initial_condition;
+    ref0,
     n_samples, n_gap
 )
 
-    # Initialize sim, do a first step and set initial condition
+    # Initialize sim, do a first step
     first_steps!(sim; planned_steps = n_samples * n_gap + 1)
+
+    # Force reinitialization
+    copy!(sim.variables, ref0)
+    force_reinitialize!(sim)
+
+    # Set initial condition
     copy!(sim.variables, initial_condition)
+
 
     # Create container for probed fields with a first entry
     data = (; (p => [copy(probe(sim.variables))] for (p, probe) in pairs(probes))...)
@@ -75,7 +83,7 @@ function generate_rollout(;
     name,           # name of the rollout
     dir,            # output directory
 
-    scheme,         # scheme to roll out (object, or name of a stored scheme)
+    lw_scheme,      # scheme to roll out
     reference,      # reference data set to compare against
     model,          # model used
     probes,         # fields the rollout is judged on
@@ -92,9 +100,6 @@ function generate_rollout(;
     if maximum(heatmap_days) > max_horizon
         error("heatmap_days $(heatmap_days) exceed max_horizon = $max_horizon")
     end
-
-    # Load the scheme if it is given by name
-    lw_scheme = resolve_scheme(scheme)
 
     # Grid area weights, so the metrics match the ones logged during training
     w = area_weights(spectral_grid)
@@ -128,6 +133,9 @@ function generate_rollout(;
         heatmap_states = nothing
         heatmap_ref    = nothing
 
+        # Load reference state
+        ref0 = ref[0]
+
 
         # Loop over all start days
         for (i, s) in enumerate(start_days)
@@ -136,8 +144,9 @@ function generate_rollout(;
             sim = initialize!(model(spectral_grid; longwave_radiation = lw_scheme))
 
             # Propagate the scheme, starting from the reference state at day s
-            traj = sample_trajectory(sim, probes, ref[s];
-                                     n_samples = max_horizon, n_gap = steps_per_day)
+            traj = sample_trajectory(sim, probes, ref[s]; 
+                                        ref0 = ref0,
+                                        n_samples = max_horizon, n_gap = steps_per_day)
 
             # Loop over lead times
             for h in 1:max_horizon

@@ -14,7 +14,7 @@ shift_lon(lond, mat) = (lon = [l > 180 ? l - 360 : l for l in lond]; p = sortper
 
 
 # Finite values of several fields/matrices, flattened
-_finite_values(mats) = filter(isfinite, vcat(vec.(mats)...))
+_finite_values(mats) = [x for m in mats for x in m if isfinite(x)]
 
 # Helper functions for creating a color range for heatmaps
 finite_range(mats) = (v = _finite_values(mats); (minimum(v), maximum(v)))
