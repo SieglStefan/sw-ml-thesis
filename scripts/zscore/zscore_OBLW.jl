@@ -23,7 +23,7 @@ using Random
 ### Define parameters for sampling
 
 # General
-NAME        = "zscore_OBLW_default"     # name of statistics
+NAME        = "zscore_OBLW_365"         # name of statistics
 SEED        = 3                         # seed used
 
 # Spectral grid
@@ -40,7 +40,7 @@ CO2         = 280f0                     # CO2 concentration in ppm
 LW_SCHEME   = :OBLW                     # used LW scheme (OBLW or ABR)
 
 # Sampling
-T_SPINUP    = Day(30)                   # spinup time
+T_SPINUP    = Day(365)                  # spinup time
 START_DATE  = DateTime(2000, 1, 1)      # start date of simulation
 N_IC        = 3                         # number of initial conditions
 SIM_TIME    = 365                       # sampling time in days

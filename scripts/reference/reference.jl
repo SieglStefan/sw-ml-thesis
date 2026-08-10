@@ -28,6 +28,9 @@ variants = [
 
     # 1. OneBandLongwave default                  
     (;  name = "OBLW_default", lw_ref_type = :OBLW),
+
+    # 2. OneBandLongwave spinup 365                  
+    (;  name = "OBLW_spinup_365", lw_ref_type = :OBLW, t_spinup = Day(365)),
 ]
 
 # Get task number and choose task

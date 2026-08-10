@@ -29,7 +29,6 @@ experiments = [
         reference       = REF,
         SKILL...
     ),
-
     # 1. Stability
     (;  name            = "OBLW_stab",
         scheme          = :OBLW,

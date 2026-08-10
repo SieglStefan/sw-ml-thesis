@@ -189,6 +189,10 @@ export
                 LossConfig,
                         #load_field_norm,
         # plotting.jl
+                JL_BLUE,
+                JL_GREEN,
+                JL_RED,
+                JL_PURPLE,
                 FIELD_COLORS,
                 SCHEME_COLORS,
                 RUN_COLORS,

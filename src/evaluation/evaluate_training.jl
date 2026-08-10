@@ -16,7 +16,7 @@ end
 
 # Load several training runs and align them for comparison
 #   - exp: one experiment for all runs, or one experiment per run
-function _comp_runs(exp, names, file)
+function _comp_runs(exp, names, file, colors = nothing)
 
     # Broadcast a single experiment over all names
     exps = exp isa AbstractString ? fill(exp, length(names)) : collect(exp)
@@ -26,12 +26,15 @@ function _comp_runs(exp, names, file)
     n_min = minimum(nrow, dfs)
     dfs   = [df[1:n_min, :] for df in dfs]
 
-    # IC boundaries, plus colour and line style per run (fixed by scheme name)
+    # IC boundaries, plus colour and line style per run
+    #   - colours are fixed by scheme name, unless overridden entry by entry (nothing = default)
     bounds = ic_bounds(first(dfs).ic)
-    colors = [scheme_color(n, i) for (i, n) in enumerate(names)]
-    styles = [scheme_style(n)    for n in names]
+    cols   = isnothing(colors) ? [scheme_color(n, i) for (i, n) in enumerate(names)] :
+             [isnothing(c) ? scheme_color(names[i], i) : c for (i, c) in enumerate(colors)]
+    length(cols) == length(names) || error("colors has $(length(cols)) entries, names has $(length(names))")
+    styles = [scheme_style(n) for n in names]
 
-    return dfs, bounds, colors, styles
+    return dfs, bounds, cols, styles
 end
 
 
@@ -65,12 +68,12 @@ end
 
 # Compare loss, gradient- and parameter norm of several training runs
 function plot_training_comp(;
-    exp, names, labels = names,
+    exp, names, labels = names, colors = nothing,
     file = "training.csv", smooth = 10, plot_kwargs = (;),
 )
 
     # Load and align the runs
-    dfs, bounds, colors, styles = _comp_runs(exp, names, file)
+    dfs, bounds, colors, styles = _comp_runs(exp, names, file, colors)
 
     # Loss (the objective itself)
     p1 = _comp_panel(dfs, labels, colors, styles, :loss_total;
@@ -94,12 +97,12 @@ end
 
 # Compare normalized rmse and bias per field of several training runs
 function plot_metrics_comp(;
-    exp, names, labels = names,
+    exp, names, labels = names, colors = nothing,
     file = "training.csv", smooth = 10, plot_kwargs = (;),
 )
 
     # Load and align the runs
-    dfs, bounds, colors, styles = _comp_runs(exp, names, file)
+    dfs, bounds, colors, styles = _comp_runs(exp, names, file, colors)
 
     # One row per field, rmse left and bias right
     panels = Plots.Plot[]
