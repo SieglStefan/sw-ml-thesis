@@ -179,17 +179,14 @@ function training_online(;
 
     # Plot final loss trajectory and metrics
     # Create plots
-    p = plot_training(;
-        dir = tc.dir, file = "training.csv", n_batch = tc.n_batch,
-        plot_kwargs = (; plot_title = "Training Plot")
+    p = plot_training(; 
+        dir = tc.dir, plot_kwargs = (; plot_title = "Training Plot"), n_batch = tc.n_batch,
     )
     pn = plot_metrics_norm(;
-        dir = tc.dir, file = "training.csv", weights = tc.loss_config.weights,
-        plot_kwargs = (; plot_title = "Normed Metrics Plot")
+        dir = tc.dir, plot_kwargs = (; plot_title = "Normed Metrics Plot"), weights = tc.loss_config.weights,
     )
     pr = plot_metrics_raw(;
-        dir = tc.dir, file = "training.csv",
-        plot_kwargs = (; plot_title = "Raw Metrics Plot")
+        dir = tc.dir, plot_kwargs = (; plot_title = "Raw Metrics Plot")
     )
 
     # Prepare plots directory

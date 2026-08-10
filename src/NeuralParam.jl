@@ -189,13 +189,20 @@ export
                         #load_field_norm,
         # plotting.jl
                 FIELD_COLORS,
+                RUN_COLORS,
                 log_or_lin,
                 ic_bounds,
-                plot_loss,
+                _stack,
                 plot_training,
-                plot_training_comp,
                 plot_metrics_norm,
                 plot_metrics_raw,
+                _block_mean,
+                _comp_runs,
+                _comp_scale,
+                _comp_panel,
+                plot_training_comp,
+                plot_metrics_comp,
+                compare_runs,
         # run_training.jl
                 run_training,
         # setup.jl
