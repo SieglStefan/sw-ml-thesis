@@ -26,49 +26,58 @@ function rollout_curve(r, probe, metric; layer = nothing, f = mean)
 end
 
 
-# Plot ONE metric for several probed fields, one row per field (3x1 for T, olw, slwd)
+# Plot ONE metric for several probed fields, one column per field (1x3 for T, olw, slwd)
 #   - one line per scheme, ribbon = spread over the trajectories
+#   - only the first panel carries the legend, every panel shares the same schemes
 function plot_rollout(;
     rollouts::NamedTuple,
     metric::Symbol,
     probes = (:T, :olw, :slwd),
+    labels = nothing,
+    colors = nothing,
     layer = nothing,
     ribbon = true,
-    ncols = 1,
-    kwargs...
+    ncols = length(probes),
+    plot_kwargs = (;),
 )
 
-    # One panel per probed field
-    panels = map(collect(probes)) do probe
+    # Legend names: the rollout keys unless given explicitly
+    labs = isnothing(labels) ? [String(k) for k in keys(rollouts)] : collect(labels)
+    length(labs) == length(rollouts) || error("labels has $(length(labs)) entries, rollouts has $(length(rollouts))")
+
+    # Colour and line style are fixed by scheme name unless given explicitly
+    names = collect(keys(rollouts))
+    cols = isnothing(colors) ? [scheme_color(n, i) for (i, n) in enumerate(names)] :
+           [isnothing(c) ? scheme_color(names[i], i) : c for (i, c) in enumerate(colors)]
+    length(cols) == length(rollouts) || error("colors has $(length(cols)) entries, rollouts has $(length(rollouts))")
+    styles = [scheme_style(n) for n in names]
+
+    # One panel per probed field (the ylabel names the field, so no panel title)
+    panels = map(enumerate(collect(probes))) do (j, probe)
 
         unit = get(DEF_PROBE_UNITS, probe, "")
         p = Plots.plot(; xlabel = "forecast horizon [days]",
                          ylabel = isempty(unit) ? String(probe) : "$(probe) [$(unit)]",
-                         title  = String(probe),
-                         titlefontsize = 10,
-                         titlefontcolor = get(FIELD_COLORS, probe, :black),
-                         legend = :topleft)
+                         legend = j == 1 ? :topleft : false,
+                         background_color_legend = RGBA(1, 1, 1, 0.6),
+                         foreground_color_legend = nothing)
 
         # One line per scheme
-        for (name, r) in pairs(rollouts)
+        for (i, r) in enumerate(values(rollouts))
             rib = ribbon ? rollout_curve(r, probe, metric; layer, f = std) : nothing
             Plots.plot!(p, collect(r.days), rollout_curve(r, probe, metric; layer);
-                        label = String(name), lw = 2, ribbon = rib, fillalpha = 0.15)
+                        label = labs[i], lw = 2, color = cols[i], ls = styles[i],
+                        ribbon = rib, fillalpha = 0.15)
         end
 
         return p
     end
 
-    # Arrange in a grid, one column by default -> 3x1 for the three loss fields
-    nrows = cld(length(panels), ncols)
-    lay   = isnothing(layer) ? "all layers" : "layer $(layer)"
+    # Arrange in a grid, one column per field by default -> 1x3 for the three loss fields
+    lay = isnothing(layer) ? "all layers" : "layer $(layer)"
 
-    return Plots.plot(panels...;
-        layout     = (nrows, ncols),
-        size       = (650 * ncols, 330 * nrows),
-        margin     = 5Plots.mm,
-        plot_title = "$(metric) - $(lay)",
-        kwargs...)
+    return _stack(panels...; ncols, width = 650, height = 380,
+        plot_kwargs = merge((; plot_title = "$(metric) - $(lay)"), plot_kwargs))
 end
 
 
@@ -108,6 +117,7 @@ hm_field(r, var, j; layer = nothing) =
 function plot_rollout_heatmaps(;
     rollouts::NamedTuple,
     var::Symbol = :T,               # a PROBE name, heatmap_states is keyed by probes
+    labels = nothing,
     layer = nothing,
     ref = nothing,
     colorrange = nothing,           # nothing = derive one common range over all days
@@ -117,8 +127,18 @@ function plot_rollout_heatmaps(;
     # All rollouts of one protocol share the heatmap days
     days = first(values(rollouts)).heatmap_days
 
-    # Difference to itself is zero everywhere, so drop the reference panel
-    names = isnothing(ref) ? collect(keys(rollouts)) : collect(filter(!=(ref), keys(rollouts)))
+    # Panel names: the rollout keys unless given explicitly
+    all_names = collect(keys(rollouts))
+    all_labs  = isnothing(labels) ? String.(all_names) : collect(labels)
+    length(all_labs) == length(rollouts) || error("labels has $(length(all_labs)) entries, rollouts has $(length(rollouts))")
+
+    # Difference to itself is zero everywhere, so drop the reference panel and its label
+    keep  = [n != ref for n in all_names]
+    names = all_names[keep]
+    labs  = all_labs[keep]
+
+    # Name of the reference, for the title
+    ref_lab = isnothing(ref) ? "" : all_labs[findfirst(==(ref), all_names)]
 
     lay = isnothing(layer) ? "" : ", layer $(layer)"
 
@@ -148,10 +168,10 @@ function plot_rollout_heatmaps(;
     return map(enumerate(days)) do (j, d)
 
         title = isnothing(ref) ? "$(var)$(lay) - day $(d)" :
-                                 "$(var)$(lay) - day $(d), difference to $(ref)"
+                                 "$(var)$(lay) - day $(d), difference to $(ref_lab)"
 
         style = (; colorrange = crange, cmap..., suptitle = title)
 
-        plot_heatmaps(fields_per_day[j]; titles = String.(names), merge(style, values(kwargs))...)
+        plot_heatmaps(fields_per_day[j]; titles = labs, merge(style, values(kwargs))...)
     end
 end

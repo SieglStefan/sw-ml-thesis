@@ -25,7 +25,20 @@ sym_range(mats) = (m = maximum(abs, _finite_values(mats)); (-m, m))
 
 
 # Plot multiple heatmaps with shared colorbar
-function plot_heatmaps(F_vec; titles = nothing, layout = :vertical, coastlines = true, grid = false, suptitle = "", colorrange=nothing, kwargs...)
+function plot_heatmaps(F_vec;
+    titles = nothing,
+    layout = :vertical,
+    coastlines = true,
+    grid = false,
+    suptitle = "",
+    colorrange = nothing,
+    width = 500,                # width of ONE panel
+    height = 250,               # height of ONE panel
+    titlesize = 16,             # panel titles
+    suptitlesize = 18,          # figure title
+    ticklabelsize = 12,
+    kwargs...
+)
     n      = length(F_vec)
     titles = isnothing(titles) ? ["Heatmap $i" for i in 1:n] : titles
     conv   = [field_to_lonlatmat(F) for F in F_vec]
@@ -37,12 +50,14 @@ function plot_heatmaps(F_vec; titles = nothing, layout = :vertical, coastlines =
         pos = layout == :vertical ? fig[i, 1] : fig[1, i]
         if coastlines
             lon, mat = shift_lon(lond, mat)
-            ax = GeoMakie.GeoAxis(pos; dest = "+proj=longlat", title = titles[i], width = 500, height = 250,
+            ax = GeoMakie.GeoAxis(pos; dest = "+proj=longlat", title = titles[i], titlesize,
+                                  width, height, xticklabelsize = ticklabelsize, yticklabelsize = ticklabelsize,
                                   xgridvisible = grid, ygridvisible = grid)
             hm = CairoMakie.heatmap!(ax, lon, latd, mat; colorrange = crange, kwargs...)
             CairoMakie.lines!(ax, GeoMakie.coastlines(); color = :black)
         else
-            ax = CairoMakie.Axis(pos; title = titles[i], width = 500, height = 250,
+            ax = CairoMakie.Axis(pos; title = titles[i], titlesize,
+                                 width, height, xticklabelsize = ticklabelsize, yticklabelsize = ticklabelsize,
                                  xgridvisible = grid, ygridvisible = grid)
             hm = CairoMakie.heatmap!(ax, lond, latd, mat; colorrange = crange, kwargs...)
         end
@@ -50,7 +65,7 @@ function plot_heatmaps(F_vec; titles = nothing, layout = :vertical, coastlines =
 
     layout == :vertical ? CairoMakie.Colorbar(fig[:, 2], hm) : CairoMakie.Colorbar(fig[1, n+1], hm)
 
-    isempty(suptitle) || CairoMakie.Label(fig[0, :], suptitle; fontsize = 18, font = :bold)
+    isempty(suptitle) || CairoMakie.Label(fig[0, :], suptitle; fontsize = suptitlesize, font = :bold)
     CairoMakie.resize_to_layout!(fig)
     return fig
 end

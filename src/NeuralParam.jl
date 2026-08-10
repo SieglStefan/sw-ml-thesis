@@ -113,7 +113,6 @@ export
                 plot_zscore,
 
 
-
         ### architectures
         # abstract_arch.jl
                         #AbstractArchConfig,
@@ -128,6 +127,7 @@ export
         ### parameterizations
         # abstract_longwave.jl
                         #AbstractLW,
+                build_scheme,
         # input.jl
                         #in_T,
                         #in_q,
@@ -171,6 +171,7 @@ export
                         #update_ps,
                         #info_scheme,
 
+
         ### training
         # config.jl
                 TrainConfig,
@@ -189,20 +190,17 @@ export
                         #load_field_norm,
         # plotting.jl
                 FIELD_COLORS,
+                SCHEME_COLORS,
                 RUN_COLORS,
+                        #BASELINES,
+                scheme_color,
+                scheme_style,
                 log_or_lin,
                 ic_bounds,
                 _stack,
                 plot_training,
                 plot_metrics_norm,
                 plot_metrics_raw,
-                _block_mean,
-                _comp_runs,
-                _comp_scale,
-                _comp_panel,
-                plot_training_comp,
-                plot_metrics_comp,
-                compare_runs,
         # run_training.jl
                 run_training,
         # setup.jl
@@ -218,6 +216,14 @@ export
 
 
         ### evaluation
+        # evaluate_training.jl
+                _block_mean,
+                _comp_runs,
+                _comp_scale,
+                _comp_panel,
+                plot_training_comp,
+                plot_metrics_comp,
+                compare_runs,
         # evaluate_rollout.jl
                         #reduce_cols,
                 rollout_curve,
@@ -227,6 +233,7 @@ export
                 plot_rollout_heatmaps,
         # evaluate_benchmark.jl
                 evaluate_benchmark,
+                benchmark_scheme,
                 print_benchmark
 
 
@@ -279,6 +286,7 @@ include("training/run_training.jl")
 
 
 # Evaluation infrastructure
+include("evaluation/evaluate_training.jl")
 include("evaluation/evaluate_rollout.jl")
 include("evaluation/evaluate_benchmark.jl")
 

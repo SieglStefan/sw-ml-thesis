@@ -84,17 +84,7 @@ SG = SpectralGrid(trunc = TRUNC, nlayers = NLAYERS)
 
 
 ### Define reference scheme
-if LW_REF_TYPE == :OBLW
-    lw_reference = OneBandLongwave(SG;
-        transmissivity     = FriersonLongwaveTransmissivity(SG),
-        radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
-                                emissivity_ocean = EM_OCEAN,
-                                emissivity_land  = EM_LAND
-        ),
-    )
-else 
-    error("Unknown reference scheme type: $LW_REF_TYPE")
-end
+lw_reference = build_scheme(LW_REF_TYPE, SG; em_ocean = EM_OCEAN, em_land = EM_LAND)
 
 
 

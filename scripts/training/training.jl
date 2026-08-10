@@ -105,17 +105,7 @@ SG = SpectralGrid(trunc = TRUNC, nlayers = NLAYERS)
 
 
 ### Prepare target scheme
-if LW_TARGET_TYPE == :OBLW
-    lw_target = OneBandLongwave(SG;
-        transmissivity     = FriersonLongwaveTransmissivity(SG),
-        radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
-                                emissivity_ocean = EM_OCEAN, 
-                                emissivity_land  = EM_LAND
-        ),
-    )
-else 
-    error("Unknown target scheme type: $LW_TARGET_TYPE")
-end
+lw_target = build_scheme(LW_TARGET_TYPE, SG; em_ocean = EM_OCEAN, em_land = EM_LAND)
 
 
 

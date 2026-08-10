@@ -75,21 +75,10 @@ SG = SpectralGrid(trunc = TRUNC, nlayers = NLAYERS)
 
 
 ### Construct/load to be rolled out scheme
-if SCHEME == :OBLW
-    lw_scheme = OneBandLongwave(SG;
-        transmissivity     = FriersonLongwaveTransmissivity(SG),
-        radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
-                                emissivity_ocean = EM_OCEAN, 
-                                emissivity_land  = EM_LAND
-        ),
-    )
-elseif SCHEME == :ABR
-    error("ABR scheme not implemented yet")
-elseif SCHEME == :ZeroLW
-    lw_scheme = ZeroLW()
-else
-    lw_scheme = NeuralParam.load(; dir=scheme_dir(EXP, SCHEME), file="scheme.jld2")
-end
+#   - Symbol: an analytic scheme, built here.  String: a trained scheme, loaded from disk
+lw_scheme = SCHEME isa Symbol ?
+    build_scheme(SCHEME, SG; em_ocean = EM_OCEAN, em_land = EM_LAND) :
+    NeuralParam.load(; dir = scheme_dir(EXP, SCHEME), file = "scheme.jld2")
 
 
 

@@ -68,18 +68,11 @@ SG = SpectralGrid(trunc = TRUNC, nlayers = NLAYERS)
 
 
 
-### Define LW scheme
-if LW_SCHEME == :OBLW
-    lw_scheme = OneBandLongwave(SG;
-        transmissivity     = FriersonLongwaveTransmissivity(SG),
-        radiative_transfer = OneBandLongwaveRadiativeTransfer(SG;
-                                emissivity_ocean = EM_OCEAN,
-                                emissivity_land  = EM_LAND
-        ),
-    )
-else 
-    error("Unknown reference scheme type: $LW_SCHEME")
-end
+### Construct/load to be rolled out scheme
+#   - Symbol: an analytic scheme, built here.  String: a trained scheme, loaded from disk
+lw_scheme = LW_SCHEME isa Symbol ?
+    build_scheme(LW_SCHEME, SG; em_ocean = EM_OCEAN, em_land = EM_LAND) :
+    load(; dir = scheme_dir(EXP, LW_SCHEME), file = "scheme.jld2")
 
 
 
