@@ -1,0 +1,37 @@
+[general]
+created = 2026-08-10T01:32:13.190Z
+experiment = "exp_A_01_CLW_outputForms"
+julia = "1.10.10"
+name = "CLW_direct_stab"
+sw_vers = "0.21.1+DEV"
+
+[grid]
+grid_type = "OctahedralGaussianGrid"
+nlayers = 8
+trunc = 31
+
+[lw_scheme]
+def_co2 = 280.0
+def_land_em = 0.9800000190734863
+def_ocean_em = 0.9800000190734863
+n_out = 10
+output_form = "DirectOutput"
+ps = [0.19185689091682434, -0.1645084172487259, -0.18609139323234558, 0.037686727941036224, 0.07279830425977707, 0.041282642632722855, -0.45276474952697754, -0.30379176139831543, 0.21817496418952942, 0.12588529288768768]
+scheme = "ConstLW"
+zscore_stats = "zscore_OBLW_default"
+
+[rollout]
+em_land = 0.9800000190734863
+em_ocean = 0.9800000190734863
+metrics = ["rmse", "bias", "maxdiff", "mean"]
+model = "PrimitiveWetModel"
+probes = ["T", "olw", "slwd"]
+reference = "OBLW_default"
+
+[sampling]
+heatmap_days = [30, 90, 180, 365]
+heatmap_traj = 1
+max_horizon = 365
+n_traj = 4
+rollout_t = 365
+start_days = [0, 91, 182, 274]

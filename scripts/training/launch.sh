@@ -10,6 +10,7 @@
 set -euo pipefail
 
 STAGE="training"
+PREFIX="train"
 EXP=${1:?"Usage: bash scripts/$STAGE/launch.sh <experiment-name> [ARRAY]"}
 EXP_FILE="scripts/$STAGE/experiments/${EXP}.jl"
 
@@ -19,23 +20,21 @@ EXP_FILE="scripts/$STAGE/experiments/${EXP}.jl"
 if [[ $# -ge 2 ]]; then
     ARRAY=$2
 else
-    N=$(julia --startup-file=no -e '
-        n = 0
-        for a in Meta.parseall(read(ARGS[1], String)).args
-            if a isa Expr && a.head === :(=) && a.args[1] === :experiments
-                n = length(a.args[2].args)
-            end
-        end
-        n == 0 && error("no `experiments = [...]` found in " * ARGS[1])
-        print(n)
+    N=$(awk '
+        /^[[:space:]]*experiments[[:space:]]*=[[:space:]]*\[/ { inblock = 1; next }
+        inblock && /^\]/                                      { exit }
+        inblock && /^[[:space:]]+\(;/                         { n++ }
+        END { print n+0 }
     ' "$EXP_FILE")
+    [[ "$N" -gt 0 ]] || { echo "No experiment entries found in $EXP_FILE" >&2; exit 1; }
     ARRAY="0-$((N-1))"
 fi
 
+JOB="${PREFIX}_${EXP}"
 mkdir -p slurm_logs
-echo "Submitting $STAGE | $EXP | array $ARRAY"
+echo "Submitting $JOB | array $ARRAY"
 
-sbatch --job-name="$EXP" \
+sbatch --job-name="$JOB" \
        --array="$ARRAY" \
        --export=ALL,NP_EXP="$EXP" \
        --output="slurm_logs/${EXP}_%A_%a.out" \

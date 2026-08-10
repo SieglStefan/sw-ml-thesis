@@ -9,9 +9,6 @@
 
 set -euo pipefail
 
-scontrol update JobId="$SLURM_JOB_ID" \
-    JobName="${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID:-0}" || true
-
 module purge
 module load julia/1.10.10
 

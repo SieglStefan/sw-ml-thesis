@@ -171,36 +171,37 @@ function training_online(;
         Optimisers.adjust!(opt_state, eta)
 
 
-        # Plot current loss trajectory after every ic
-        # Create plots
-        p = plot_training(;
-            dir = tc.dir, file = "training.csv", n_batch = tc.n_batch,
-            plot_kwargs = (; plot_title = "until IC nr. $(ic) / $(tc.n_ic)")
-        )
-        pn = plot_metrics_norm(;
-            dir = tc.dir, file = "training.csv", weights = tc.loss_config.weights,
-            plot_kwargs = (; plot_title = "until IC nr. $(ic) / $(tc.n_ic)")
-        )
-        pr = plot_metrics_raw(;
-            dir = tc.dir, file = "training.csv",
-            plot_kwargs = (; plot_title = "until IC nr. $(ic) / $(tc.n_ic)")
-        )
-
-        # Prepare plots directory
-        dir = joinpath(tc.dir, "train_plots")
-
-        # Save plots
-        tag = "IC_" * lpad(ic, 2, '0')
-        Plots.savefig(p,  joinpath(dir, "training_$tag.png"))
-        Plots.savefig(pn, joinpath(dir, "metrics_norm_$tag.png"))
-        Plots.savefig(pr, joinpath(dir, "metrics_raw_$tag.png"))
-
-
         @info "Initial condition $(ic) / $(tc.n_ic) finished!"
     end
 
     @info "Training finished!"
 
+
+    # Plot final loss trajectory and metrics
+    # Create plots
+    p = plot_training(;
+        dir = tc.dir, file = "training.csv", n_batch = tc.n_batch,
+        plot_kwargs = (; plot_title = "Training Plot")
+    )
+    pn = plot_metrics_norm(;
+        dir = tc.dir, file = "training.csv", weights = tc.loss_config.weights,
+        plot_kwargs = (; plot_title = "Normed Metrics Plot")
+    )
+    pr = plot_metrics_raw(;
+        dir = tc.dir, file = "training.csv",
+        plot_kwargs = (; plot_title = "Raw Metrics Plot")
+    )
+
+    # Prepare plots directory
+    dir = joinpath(tc.dir, "train_plots")
+
+    # Save plots
+    Plots.savefig(p,  joinpath(dir, "training.png"))
+    Plots.savefig(pn, joinpath(dir, "metrics_norm.png"))
+    Plots.savefig(pr, joinpath(dir, "metrics_raw.png"))
+
+
+    # Return final trained scheme
     return lw_train
 end
 

@@ -9,15 +9,10 @@
 
 set -euo pipefail
 
-SCRIPT=${1:?"Usage: sbatch --array=... scripts/training/submit.sh <name-without-.jl>"}
-
-scontrol update JobId="$SLURM_JOB_ID" \
-    JobName="${SLURM_JOB_NAME}_${SLURM_ARRAY_TASK_ID:-0}" || true
-
 module purge
 module load julia/1.10.10
 export OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 export JULIA_NUM_THREADS=1
 
-echo "Host $(hostname) | Task ${SLURM_ARRAY_TASK_ID:-0} | scripts/training/$SCRIPT.jl"
-julia --project=. "scripts/training/$SCRIPT.jl"
+echo "Host $(hostname) | Exp ${NP_EXP:-exp_TEST} | Task ${SLURM_ARRAY_TASK_ID:-0}"
+julia --project=. scripts/training/training.jl

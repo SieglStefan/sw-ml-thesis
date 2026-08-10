@@ -14,11 +14,13 @@ using Random
 
 
 
-### Include possible experiments (one at a time)
-#include("experiments/exp_TEST.jl")
-#include("experiments/exp_A_01_CLW_outputForms.jl")
-#include("experiments/exp_A_02_NLW_outputForms.jl")
+### Include the experiment (selected by bash ...)
+# Include the experiment file
+exp_name = get(ENV, "NP_EXP", "exp_TEST")
+include(joinpath(@__DIR__, "experiments", exp_name * ".jl"))
+@assert EXP == exp_name "EXP in $(exp_name).jl is \"$EXP\" — must match the file name"
 
+# Choose subtask
 task = parse(Int, get(ENV, "SLURM_ARRAY_TASK_ID", "0"))
 e = experiments[task+1]
 
@@ -86,7 +88,7 @@ elseif SCHEME == :ABR
 elseif SCHEME == :ZeroLW
     lw_scheme = ZeroLW()
 else
-    lw_scheme = load(; dir=scheme_dir(EXP, SCHEME), file="scheme.jld2")
+    lw_scheme = NeuralParam.load(; dir=scheme_dir(EXP, SCHEME), file="scheme.jld2")
 end
 
 

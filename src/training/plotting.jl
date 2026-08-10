@@ -120,7 +120,7 @@ function plot_training(; dir="", file="", n_batch, kwargs...)
     pnorm = df.pnorm
     gnorm = df.gnorm
     
-    return plot_training(loss, pnorm, gnorm; n_batch, kwargs...)
+    return plot_training(loss, pnorm, gnorm; ic = df.N-ic, n_batch, kwargs...)
 end
 
 

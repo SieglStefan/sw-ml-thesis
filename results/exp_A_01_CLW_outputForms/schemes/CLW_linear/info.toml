@@ -1,0 +1,64 @@
+[general]
+created = 2026-08-09T22:41:26.365Z
+experiment = "exp_A_01_CLW_outputForms"
+julia = "1.10.10"
+name = "CLW_linear"
+seed = 2
+sw_vers = "0.21.1+DEV"
+
+[grid]
+grid_type = "OctahedralGaussianGrid"
+nlayers = 8
+trunc = 31
+
+[learning_parameters]
+clip_norm = 1.0
+eta0 = 0.10000000149011612
+eta_decay = 0.699999988079071
+weight_decay = 0.0
+
+[loss]
+zscore_name = "zscore_OBLW_default"
+
+    [loss.weights]
+    T = 1.0
+    olw = 1.0
+    slwd = 1.0
+
+[lw_train]
+def_co2 = 280.0
+def_land_em = 0.9800000190734863
+def_ocean_em = 0.9800000190734863
+n_out = 21
+output_form = "LinearOutput"
+ps = [-0.1907372772693634, -0.6760295033454895, -0.9264822602272034, -1.0608680248260498, -0.8197260499000549, -0.6489439010620117, -0.1899428516626358, -0.04243376478552818, 0.9674356579780579, 1.1239851713180542, 0.8127233982086182, 0.11341682076454163, -0.02212902158498764, 0.34166672825813293, 0.4369407892227173, 0.2538992464542389, -0.14894741773605347, -1.69772207736969, -0.27570751309394836, 0.43811994791030884, 0.4891364276409149]
+scheme = "ConstLW"
+zscore_stats = "zscore_OBLW_default"
+
+[model]
+co2 = 280.0
+em_land = 0.9800000190734863
+em_ocean = 0.9800000190734863
+model = "PrimitiveWetModel"
+
+[perturbation]
+fac_pert_T = 2.0
+fac_pert_q = 0.20000000298023224
+
+[steps]
+n_batch = 2
+n_gap = 50
+n_ic = 5
+n_steps_0 = 10
+n_steps_inc = 0
+n_traj = 100
+
+[target]
+em_land = 0.9800000190734863
+em_ocean = 0.9800000190734863
+scheme = "OneBandLongwave"
+transmissivity = "FriersonLongwaveTransmissivity"
+
+[training_time]
+start_date = "2000-01-01T00:00:00"
+t_spinup = "30 days"
