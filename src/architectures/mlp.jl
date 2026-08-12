@@ -18,7 +18,8 @@ function setup_arch(
     arch_config::MLPConfig,
     n_in::Int,
     n_out::Int,
-    rng = Random.default_rng(),
+    rng = Random.default_rng();
+    kwargs...,                  # ignored — only the RNN needs input_spec / nlayers
 )
 
     # Extract nn architecture parameters

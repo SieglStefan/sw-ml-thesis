@@ -56,7 +56,7 @@ function NeuralLW(;
 
 
     # Create nn architecture
-    nn, ps, st = setup_arch(arch_config, n_in, n_out, rng)
+    nn, ps, st = setup_arch(arch_config, n_in, n_out, rng; input_spec, nlayers)
 
 
     # Create empty input buffer

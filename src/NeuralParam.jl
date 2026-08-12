@@ -122,7 +122,9 @@ export
                         #setup_arch,
                         #info_arch,
         # rnn.jl
-                        # ---
+                RNNConfig,
+                        #setup_arch,
+                        #info_arch,
 
 
         ### parameterizations

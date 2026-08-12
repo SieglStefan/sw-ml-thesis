@@ -121,9 +121,16 @@ if ARCH_TYPE == :MLP
         width     = WIDTH,
         act       = ACT,
     )
+elseif ARCH_TYPE == :RNN
+    arch_config = RNNConfig(
+        width     = WIDTH,
+        act       = ACT,
+    )
 else
     error("Unknown architecture type: $ARCH_TYPE")
 end
+
+
 
 # Define final scheme
 if LW_TRAIN_TYPE == :ConstLW
