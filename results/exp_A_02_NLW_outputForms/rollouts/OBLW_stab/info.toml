@@ -1,5 +1,5 @@
 [general]
-created = 2026-08-10T00:34:21.308Z
+created = 2026-08-12T17:56:33.005Z
 experiment = "exp_A_02_NLW_outputForms"
 julia = "1.10.10"
 name = "OBLW_stab"

@@ -27,6 +27,7 @@ EXCLUDES=(
   --exclude '/evaluation/'
   --exclude '/results_OLD/'
   --exclude '/results_OLD_2/'
+  --exclude '/results_OUTDATED/'
   --exclude '/sandbox/'
   --exclude '/slurm_logs/'
   --exclude '/tests/'

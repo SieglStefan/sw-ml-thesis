@@ -38,9 +38,8 @@ function _comp_runs(exp, names, file, colors = nothing, steps = nothing)
     # Colour and line style per run (nothing = default from the scheme name)
     colors = isnothing(colors) ? [scheme_color(n, i) for (i, n) in enumerate(names)] :
              [isnothing(c) ? scheme_color(names[i], i) : c for (i, c) in enumerate(colors)]
-    styles = [scheme_style(n) for n in names]
 
-    return dfs, bounds, colors, styles, x0
+    return dfs, bounds, colors, x0
 end
 
 
@@ -49,7 +48,7 @@ _comp_scale(dfs, col) = log_or_lin(reduce(vcat, [df[!, col] for df in dfs]))
 
 
 # One panel: one logged column, one line per run
-function _comp_panel(dfs, labels, colors, styles, col;
+function _comp_panel(dfs, labels, colors, col;
     ylabel, bounds, smooth, x0 = 0,
     xlabel = "", yscale = :identity, zeroline = false, legend = false,
 )
@@ -59,9 +58,9 @@ function _comp_panel(dfs, labels, colors, styles, col;
                      foreground_color_legend = nothing)
 
     # One line per run
-    for (df, l, c, s) in zip(dfs, labels, colors, styles)
+    for (df, l, c) in zip(dfs, labels, colors)
         x, y = _block_mean(df[!, col], smooth)
-        Plots.plot!(p, x .+ x0, y; label = l, lw = 2, color = c, ls = s)
+        Plots.plot!(p, x .+ x0, y; label = l, lw = 2, color = c)
     end
 
     zeroline && Plots.hline!(p, [0]; color = :black, ls = :dash, lw = 1, label = "")
@@ -79,17 +78,17 @@ function plot_training_comp(;
     file = "training.csv", smooth = 10, plot_kwargs = (;),
 )
 
-    dfs, bounds, colors, styles, x0 = _comp_runs(exp, names, file, colors, steps)
+    dfs, bounds, colors, x0 = _comp_runs(exp, names, file, colors, steps)
 
-    p1 = _comp_panel(dfs, labels, colors, styles, :loss_total;
+    p1 = _comp_panel(dfs, labels, colors, :loss_total;
         ylabel = "Loss", yscale = _comp_scale(dfs, :loss_total),
         bounds, smooth, x0, legend = :topleft)
 
-    p2 = _comp_panel(dfs, labels, colors, styles, :gnorm;
+    p2 = _comp_panel(dfs, labels, colors, :gnorm;
         ylabel = "Gradient norm", yscale = _comp_scale(dfs, :gnorm),
         bounds, smooth, x0)
 
-    p3 = _comp_panel(dfs, labels, colors, styles, :pnorm;
+    p3 = _comp_panel(dfs, labels, colors, :pnorm;
         ylabel = "Parameter norm", xlabel = "Training step",
         bounds, smooth, x0)
 
@@ -108,7 +107,7 @@ function plot_metrics_comp(;
     file = "training.csv", smooth = 10, plot_kwargs = (;),
 )
 
-    dfs, bounds, colors, styles, x0 = _comp_runs(exp, names, file, colors, steps)
+    dfs, bounds, colors, x0 = _comp_runs(exp, names, file, colors, steps)
 
     # One panel per field, stacked
     panels = Plots.Plot[]
@@ -116,7 +115,7 @@ function plot_metrics_comp(;
 
         unit = f === :T ? "Tₑᵣᵣ" : "σ"
 
-        push!(panels, _comp_panel(dfs, labels, colors, styles, Symbol("nrmse_", f);
+        push!(panels, _comp_panel(dfs, labels, colors, Symbol("nrmse_", f);
             ylabel = "$(f) RMSE [$(unit)]",
             xlabel = i == 3 ? "Training step" : "",
             bounds, smooth, x0, legend = (i == 1 ? :topleft : false)))

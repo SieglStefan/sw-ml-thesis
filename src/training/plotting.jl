@@ -45,11 +45,6 @@ function scheme_color(name, i = 1)
     return RUN_COLORS[mod1(i, length(RUN_COLORS))]
 end
 
-# Reference schemes: not trained, only there to compare against -> drawn dashed
-const BASELINES = ("OBLW", "ZeroLW")
-
-# Line style of one run: dashed for the baselines, solid for a trained scheme
-scheme_style(name) = any(occursin(b, String(name)) for b in BASELINES) ? :dash : :solid
 
 # Utility function for not-breaking the axis for log10 plots
 log_or_lin(v) = all(>(0), v) ? :log10 : :identity

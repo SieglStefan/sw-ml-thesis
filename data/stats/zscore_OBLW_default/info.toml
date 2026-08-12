@@ -1,7 +1,7 @@
 [general]
-created = 2026-08-09T21:08:59.500Z
+created = 2026-08-10T23:40:32.858Z
 julia = "1.10.11"
-name = "zscore_OBLW_default"
+name = "zscore_OBLW_365"
 seed = 3
 sw_vers = "0.21.1+DEV"
 
@@ -33,4 +33,4 @@ n_ic = 3
 sample_gap = 3.65
 sim_time = 365
 start_date = "2000-01-01T00:00:00"
-t_spinup = "30 days"
+t_spinup = "365 days"

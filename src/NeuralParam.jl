@@ -17,6 +17,7 @@ using TOML
 using Random
 using Dates
 using Statistics
+using LinearAlgebra
 
 using Plots
 using CairoMakie
@@ -196,9 +197,7 @@ export
                 FIELD_COLORS,
                 SCHEME_COLORS,
                 RUN_COLORS,
-                        #BASELINES,
                 scheme_color,
-                scheme_style,
                 log_or_lin,
                 ic_bounds,
                 _stack,
@@ -237,7 +236,6 @@ export
                 plot_rollout_heatmaps,
                 print_correlation,
         # evaluate_benchmark.jl
-                evaluate_benchmark,
                 benchmark_scheme,
                 print_benchmark
 

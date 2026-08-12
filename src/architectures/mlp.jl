@@ -26,7 +26,7 @@ function setup_arch(
 
 
     # Build nn
-    hidden = [Lux.Dense(width => width, act) for _ in 1:n_hidden]
+    hidden = [Lux.Dense(width => width, act) for _ in 1:n_hidden-1]
 
     nn = Lux.Chain(
         Lux.Dense(n_in => width, act),

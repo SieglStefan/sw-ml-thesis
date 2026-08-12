@@ -48,8 +48,8 @@ CO2             = get(e, :CO2, 280f0)                 # CO2 concentration in ppm
 LW_TARGET_TYPE  = get(e, :lw_target_type, :OBLW)      # LW target scheme type (OBLW or ABR)
 
 # Trained scheme
-LW_TRAIN_TYPE   = get(e, :lw_train_type, :ConstLW)                        # to be trained LW scheme type (ConstLW or NeuralLW)    
-OUTPUT_FORM     = get(e, :output_form, LinearOutput())                    # output form of trained scheme
+LW_TRAIN_TYPE   = get(e, :lw_train_type, :NeuralLW)                        # to be trained LW scheme type (ConstLW or NeuralLW)    
+OUTPUT_FORM     = get(e, :output_form, PlanckOutput())                    # output form of trained scheme
 ZSCORE_NAME     = get(e, :zscore_name, "zscore_OBLW_default")             # used zscore statistics
 
 # Architecture
@@ -59,7 +59,7 @@ WIDTH           = get(e, :width, 32)                  # width of hidden layers
 ACT             = get(e, :act, tanh)                 # activation function
 
 # Input specification
-INPUT_SPEC      = get(e, :input_spec, input_spec(:T, :Ts, :lat))          # input specification for NeuralLW
+INPUT_SPEC      = get(e, :input_spec, input_spec(:T, :sst, :lst, :lf, :lat, :p))          # input specification for NeuralLW
 
 # Learning parameters
 ETA0            = get(e, :eta0, 1f-2)                 # initial learning rate
@@ -71,13 +71,13 @@ WEIGHT_DECAY    = get(e, :weight_decay, 1f-4)         # weight decay factor
 WEIGHTS         = get(e, :weights, (; T = 1f0, olw = 1f0, slwd = 1f0))    # weights for loss function
 
 # Spinup and start date
-T_SPINUP        = get(e, :t_spinup, Day(30))                              # spinup time
+T_SPINUP        = get(e, :t_spinup, Day(365))                              # spinup time
 START_DATE      = get(e, :start_date, DateTime(2000, 1, 1))               # sampling starting date
 
 # Training steps parameters
 N_IC            = get(e, :n_ic, 5)                    # nr. of ic used for training
 N_TRAJ          = get(e, :n_traj, 100)                 # nr. of trajectroies per ic
-N_BATCH         = get(e, :n_batch, 2)                 # batch size for training
+N_BATCH         = get(e, :n_batch, 4)                 # batch size for training
 N_STEPS_0       = get(e, :n_steps_0, 10)               # nr. of initial training steps per update
 N_STEPS_INC     = get(e, :n_steps_inc, 0)             # increase of n_steps after an ic
 N_GAP           = get(e, :n_gap, 50)                  # nr. of timestep!() between two trajectories

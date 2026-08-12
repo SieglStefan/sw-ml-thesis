@@ -50,7 +50,6 @@ function plot_rollout(;
     cols = isnothing(colors) ? [scheme_color(n, i) for (i, n) in enumerate(names)] :
            [isnothing(c) ? scheme_color(names[i], i) : c for (i, c) in enumerate(colors)]
     length(cols) == length(rollouts) || error("colors has $(length(cols)) entries, rollouts has $(length(rollouts))")
-    styles = [scheme_style(n) for n in names]
 
     # One panel per probed field (the ylabel names the field, so no panel title)
     panels = map(enumerate(collect(probes))) do (j, probe)
@@ -66,7 +65,7 @@ function plot_rollout(;
         for (i, r) in enumerate(values(rollouts))
             rib = ribbon ? rollout_curve(r, probe, metric; layer, f = std) : nothing
             Plots.plot!(p, collect(r.days), rollout_curve(r, probe, metric; layer);
-                        label = labs[i], lw = 2, color = cols[i], ls = styles[i],
+                        label = labs[i], lw = 2, color = cols[i],
                         ribbon = rib, fillalpha = 0.15)
         end
 

@@ -23,7 +23,7 @@ using Random
 ### Define parameters for sampling
 
 # General
-NAME        = "zscore_OBLW_365"         # name of statistics
+NAME        = "zscore_OBLW_default"         # name of statistics
 SEED        = 3                         # seed used
 
 # Spectral grid

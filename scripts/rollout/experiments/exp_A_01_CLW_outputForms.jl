@@ -52,44 +52,91 @@ experiments = [
     ),
 
 
+
+    ##### Seed 10
     ### CLW: direct output
     # 4. Skill
-    (;  name            = "CLW_direct_skill",
-        scheme          = "CLW_direct",
+    (;  name            = "CLW_direct_s1000_skill",
+        scheme          = "CLW_direct_s1000",
         reference       = REF,
         SKILL...
     ),
     # 5. Stability
-    (;  name            = "CLW_direct_stab",
-        scheme          = "CLW_direct",
+    (;  name            = "CLW_direct_s1000_stab",
+        scheme          = "CLW_direct_s1000",
         reference       = REF,
         STAB...
     ),
 
     ### CLW: linear output
     # 6. Skill
-    (;  name            = "CLW_linear_skill",
-        scheme          = "CLW_linear",
+    (;  name            = "CLW_linear_s1000_skill",
+        scheme          = "CLW_linear_s1000",
         reference       = REF,
         SKILL...
     ),
     # 7. Stability
-    (;  name            = "CLW_linear_stab",
-        scheme          = "CLW_linear",
+    (;  name            = "CLW_linear_s1000_stab",
+        scheme          = "CLW_linear_s1000",
         reference       = REF,
         STAB...
     ),
 
     ### CLW: planck output
     # 8. Skill
-    (;  name            = "CLW_planck_skill",
-        scheme          = "CLW_planck",
+    (;  name            = "CLW_planck_s1000_skill",
+        scheme          = "CLW_planck_s1000",
         reference       = REF,
         SKILL...
     ),
     # 9. Stability
-    (;  name            = "CLW_planck_stab",
-        scheme          = "CLW_planck",
+    (;  name            = "CLW_planck_s1000_stab",
+        scheme          = "CLW_planck_s1000",
+        reference       = REF,
+        STAB...
+    ),
+
+
+
+    ##### Seed 20
+    ### CLW: direct output
+    # 10. Skill
+    (;  name            = "CLW_direct_s2000_skill",
+        scheme          = "CLW_direct_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 11. Stability
+    (;  name            = "CLW_direct_s2000_stab",
+        scheme          = "CLW_direct_s2000",
+        reference       = REF,
+        STAB...
+    ),
+
+    ### CLW: linear output
+    # 12. Skill
+    (;  name            = "CLW_linear_s2000_skill",
+        scheme          = "CLW_linear_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 13. Stability
+    (;  name            = "CLW_linear_s2000_stab",
+        scheme          = "CLW_linear_s2000",
+        reference       = REF,
+        STAB...
+    ),
+
+    ### CLW: planck output
+    # 14. Skill
+    (;  name            = "CLW_planck_s2000_skill",
+        scheme          = "CLW_planck_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 15. Stability
+    (;  name            = "CLW_planck_s2000_stab",
+        scheme          = "CLW_planck_s2000",
         reference       = REF,
         STAB...
     ),

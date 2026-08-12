@@ -38,48 +38,93 @@ experiments = [
     ),
 
 
+    ##### Seed 10
     ### NLW: direct output
-    # 2. Skill
-    (;  name            = "NLW_direct_skill",
-        scheme          = "NLW_direct",
+    # 4. Skill
+    (;  name            = "NLW_direct_s1000_skill",
+        scheme          = "NLW_direct_s1000",
         reference       = REF,
         SKILL...
     ),
-    # 3. Stability
-    (;  name            = "NLW_direct_stab",
-        scheme          = "NLW_direct",
+    # 5. Stability
+    (;  name            = "NLW_direct_s1000_stab",
+        scheme          = "NLW_direct_s1000",
         reference       = REF,
         STAB...
     ),
 
     ### NLW: linear output
-    # 4. Skill
-    (;  name            = "NLW_linear_skill",
-        scheme          = "NLW_linear",
+    # 6. Skill
+    (;  name            = "NLW_linear_s1000_skill",
+        scheme          = "NLW_linear_s1000",
         reference       = REF,
         SKILL...
     ),
-    # 5. Stability
-    (;  name            = "NLW_linear_stab",
-        scheme          = "NLW_linear",
+    # 7. Stability
+    (;  name            = "NLW_linear_s1000_stab",
+        scheme          = "NLW_linear_s1000",
         reference       = REF,
         STAB...
     ),
 
     ### NLW: planck output
-    # 6. Skill
-    (;  name            = "NLW_planck_skill",
-        scheme          = "NLW_planck",
+    # 8. Skill
+    (;  name            = "NLW_planck_s1000_skill",
+        scheme          = "NLW_planck_s1000",
         reference       = REF,
         SKILL...
     ),
-    # 7. Stability
-    (;  name            = "NLW_planck_stab",
-        scheme          = "NLW_planck",
+    # 9. Stability
+    (;  name            = "NLW_planck_s1000_stab",
+        scheme          = "NLW_planck_s1000",
         reference       = REF,
         STAB...
     ),
 
+
+
+    ##### Seed 20
+    ### NLW: direct output
+    # 10. Skill
+    (;  name            = "NLW_direct_s2000_skill",
+        scheme          = "NLW_direct_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 11. Stability
+    (;  name            = "NLW_direct_s2000_stab",
+        scheme          = "NLW_direct_s2000",
+        reference       = REF,
+        STAB...
+    ),
+
+    ### NLW: linear output
+    # 12. Skill
+    (;  name            = "NLW_linear_s2000_skill",
+        scheme          = "NLW_linear_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 13. Stability
+    (;  name            = "NLW_linear_s2000_stab",
+        scheme          = "NLW_linear_s2000",
+        reference       = REF,
+        STAB...
+    ),
+
+    ### NLW: planck output
+    # 14. Skill
+    (;  name            = "NLW_planck_s2000_skill",
+        scheme          = "NLW_planck_s2000",
+        reference       = REF,
+        SKILL...
+    ),
+    # 15. Stability
+    (;  name            = "NLW_planck_s2000_stab",
+        scheme          = "NLW_planck_s2000",
+        reference       = REF,
+        STAB...
+    ),
 ]
 
 

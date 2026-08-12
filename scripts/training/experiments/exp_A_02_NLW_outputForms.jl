@@ -17,17 +17,9 @@ NLW_OBLW_CONFIG = (;
     lw_target_type = :OBLW,
 
     lw_train_type  = :NeuralLW,
-    zscore_name    = "zscore_OBLW_default",
 
     eta0           = 1f-2,
     eta_decay      = 0.7f0,
-
-    n_ic           = 5,
-    n_traj         = 100,
-    n_batch        = 2,
-    n_steps_0      = 10,
-    n_steps_inc    = 0,
-    n_gap          = 50,
 )
 
 
@@ -35,13 +27,23 @@ NLW_OBLW_CONFIG = (;
 # Define experiments
 experiments = [
 
-    # 0: Direct output
-    (; name = "NLW_direct", output_form = DirectOutput(), NLW_OBLW_CONFIG...),
+    # 0: Direct output, seed = 1000
+    (; name = "NLW_direct_s1000", output_form = DirectOutput(), seed = 1000, NLW_OBLW_CONFIG...),
 
-    # 1: Linear output
-    (; name = "NLW_linear", output_form = LinearOutput(), NLW_OBLW_CONFIG...),
+    # 1: Linear output, seed = 1000
+    (; name = "NLW_linear_s1000", output_form = LinearOutput(), seed = 1000, NLW_OBLW_CONFIG...),
 
-    # 2: Planck output
-    (; name = "NLW_planck", output_form = PlanckOutput(), NLW_OBLW_CONFIG...),
+    # 2: Planck output, seed = 1000
+    (; name = "NLW_planck_s1000", output_form = PlanckOutput(), seed = 1000, NLW_OBLW_CONFIG...),
+
+
+    # 3: Direct output, seed = 2000
+    (; name = "NLW_direct_s2000", output_form = DirectOutput(), seed = 2000, NLW_OBLW_CONFIG...),
+
+    # 4: Linear output, seed = 2000
+    (; name = "NLW_linear_s2000", output_form = LinearOutput(), seed = 2000, NLW_OBLW_CONFIG...),
+
+    # 5: Planck output, seed = 2000
+    (; name = "NLW_planck_s2000", output_form = PlanckOutput(), seed = 2000, NLW_OBLW_CONFIG...),
 
 ]

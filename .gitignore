@@ -2,6 +2,7 @@
 .claude/
 results_OLD/
 results_OLD_2/
+results_OUTDATED/
 sandbox/
 slurm_logs/
 commands_hpc.toml
