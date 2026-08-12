@@ -6,12 +6,12 @@
 
 
 # Define experiment name
-EXP = "exp_A_04_arch"
+EXP = "exp_A_05_arch"
 
 
 
 # Define parameters for the experiment
-REF     = "OBLW_default"
+REF     = "OBLW_spinup_365"
 SKILL   = (; max_horizon = 31,  n_traj = 52, heatmap_days = [1, 3, 7, 14, 31])
 STAB    = (; max_horizon = 365, n_traj = 12,  heatmap_days = [30, 90, 180, 365])   
 

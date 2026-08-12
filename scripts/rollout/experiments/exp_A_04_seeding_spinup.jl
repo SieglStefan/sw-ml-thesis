@@ -20,47 +20,88 @@ STAB    = (; max_horizon = 365, n_traj = 12,  heatmap_days = [30, 90, 180, 365])
 # Define experiments
 experiments = [
     
-    # 0: OneBandLongwave (sanity test, should lead to zero rmse, bias,...)
+    ### OneBandLongwave (sanity test, should lead to zero rmse, bias,...)
+    # 0: Skill
     (;  name            = "OBLW_skill",
         scheme          = :OBLW,
         reference       = REF,
         SKILL...
     ),
+    # 1: Stability
+    (;  name            = "OBLW_stab",
+        scheme          = :OBLW,
+        reference       = REF,
+        STAB...
+    ),
 
-    # 1: NLW_direct for comparison
+    ### NLW_direct for comparison
+    # 2: Skill
     (;  name            = "NLW_direct_skill",
         scheme          = "NLW_direct",
         reference       = REF,
         SKILL...
     ),
+    # 3: Stability
+    (;  name            = "NLW_direct_stab",
+        scheme          = "NLW_direct",
+        reference       = REF,
+        STAB...
+    ),
     
-    # 2: NLW_linear for comparison
+    ### NLW_linear for comparison
+    # 4: Skill
     (;  name            = "NLW_linear_skill",
         scheme          = "NLW_linear",
         reference       = REF,
         SKILL...
     ),
+    # 5: Stability
+    (;  name            = "NLW_linear_stab",
+        scheme          = "NLW_linear",
+        reference       = REF,
+        STAB...
+    ),
 
 
-    # 3: Seed 1
+    ### Seed 1
+    # 6: Skill
     (;  name            = "NLW_seed1_skill",
         scheme          = "NLW_seed1",
         reference       = REF,
         SKILL...
     ),
+    # 7: Stability
+    (;  name            = "NLW_seed1_stab",
+        scheme          = "NLW_seed1",
+        reference       = REF,
+        STAB...
+    ),
 
-    # 4: Seed 2
+    ### Seed 2
+    # 8: Skill
     (;  name            = "NLW_seed2_skill",
         scheme          = "NLW_seed2",
         reference       = REF,
         SKILL...
     ),
+    # 9: Stability
+    (;  name            = "NLW_seed2_stab",
+        scheme          = "NLW_seed2",
+        reference       = REF,
+        STAB...
+    ),
 
-    # 5: Seed 3
+    ### Seed 3
+    # 10: Skill
     (;  name            = "NLW_seed3_skill",
         scheme          = "NLW_seed3",
         reference       = REF,
         SKILL...
     ),
-
+    # 11: Stability
+    (;  name            = "NLW_seed3_stab",
+        scheme          = "NLW_seed3",
+        reference       = REF,
+        STAB...
+    ),
 ]

@@ -235,6 +235,7 @@ export
                 plot_rollout_metrics,
                         #hm_field,
                 plot_rollout_heatmaps,
+                print_correlation,
         # evaluate_benchmark.jl
                 evaluate_benchmark,
                 benchmark_scheme,

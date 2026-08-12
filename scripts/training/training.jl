@@ -8,6 +8,7 @@
 using Revise
 using NeuralParam
 using SpeedyWeather
+using Lux
 using Dates
 using Random
 

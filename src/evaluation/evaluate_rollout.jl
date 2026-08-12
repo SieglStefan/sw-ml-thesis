@@ -175,3 +175,111 @@ function plot_rollout_heatmaps(;
         plot_heatmaps(fields_per_day[j]; titles = labs, merge(style, values(kwargs))...)
     end
 end
+
+
+
+# Area-weighted correlation of two vectors
+#   - polar grid points represent far less area than tropical ones, and that is exactly where
+#     the largest errors sit, so an unweighted cor over-counts them
+function _wcor(x, y, aw)
+    mx, my = sum(aw .* x) / sum(aw), sum(aw .* y) / sum(aw)
+    dx, dy = x .- mx, y .- my
+    return sum(aw .* dx .* dy) / sqrt(sum(aw .* dx.^2) * sum(aw .* dy.^2))
+end
+
+# Spatial correlation of two error fields, averaged over layers
+#   - r per layer, then averaged - NOT pooled: pooling would count shared VERTICAL structure as
+#     spatial agreement, and would let the highest-amplitude layers dominate
+_err_cor(a, b, aw) = ndims(a) == 1 ? _wcor(a, b, aw) :
+                     mean(_wcor(a[:, k], b[:, k], aw) for k in axes(a, 2))
+
+# Grey, for the redundant lower half of a symmetric matrix
+_grey(s) = "\e[90m" * s * "\e[0m"
+
+
+# Print equal-height text blocks side by side
+function _print_blocks(blocks; gap = "            ")     # 8 spaces
+    isempty(blocks) && return nothing
+    for i in 1:maximum(length, blocks)
+        println(rstrip(join([get(blk, i, "") for blk in blocks], gap)))
+    end
+    return nothing
+end
+
+
+# Spatial correlation between the ERROR patterns of several rollouts
+#   - pairwise cor(eᵢ, eⱼ) over the grid points, where e = rollout - reference
+#   - r near 1 = the two runs make the same mistake in the same places (same learned mapping)
+#   - read it at SHORT lead: by day ~31 chaotic divergence dominates, not scheme error
+#   - the matrix is symmetric, so the diagonal and lower half are greyed out
+function print_correlation(;
+    rollouts::NamedTuple,
+    day = nothing,                  # a heatmap day; nothing = one matrix per stored day
+    var = :T,                       # a probe, or a tuple of probes
+    layer = nothing,                # nothing = mean over layers (2D vars have none)
+    labels = nothing,
+)
+
+    days      = first(values(rollouts)).heatmap_days
+    all_names = collect(keys(rollouts))
+    all_labs  = isnothing(labels) ? String.(all_names) : collect(labels)
+    length(all_labs) == length(rollouts) || error("labels has $(length(all_labs)) entries, rollouts has $(length(rollouts))")
+
+    # Which stored days to print
+    if isnothing(day)
+        js = eachindex(days)
+    else
+        j = findfirst(==(day), days)
+        isnothing(j) && error("day $(day) not in heatmap_days = $(days)")
+        js = [j]
+    end
+
+    # Error field of one rollout for probe v at heatmap day j
+    #   - 2D vars (olw, slwd) -> vector, T -> [ij, k] matrix, or one column if layer is given
+    function err(r, v, j)
+        s, f = r.heatmap_states[v][j], r.heatmap_ref[v][j]
+        use_layer = !isnothing(layer) && ndims(s) > 1
+        return Array(use_layer ? s[:, layer] .- f[:, layer] : s .- f)
+    end
+
+    # Area weights, taken from the grid the stored fields live on
+    aw = area_weights(first(values(rollouts)).heatmap_ref[:olw][1].grid)
+
+    w  = max(9, maximum(length, all_labs) + 2)
+    bw = w * (length(all_labs) + 1)
+
+    # One text block for probe v at heatmap day j
+    function block(v, j)
+
+        es = [err(rollouts[n], v, j) for n in all_names]
+
+        # Drop runs whose error field is identically zero (the reference itself)
+        keep     = [std(vec(e)) > 0 for e in es]
+        es, labs = es[keep], all_labs[keep]
+
+        lay   = isnothing(layer) || ndims(first(es)) == 1 ? "layer mean" : "layer $(layer)"
+        bwv   = w * (length(labs) + 1)                       # width of THIS block
+        lines = [rpad("$(v), $(lay) - day $(days[j])", bwv),
+                 rpad("", w) * join(lpad.(labs, w))]
+
+        for a in eachindex(es)
+            row = rpad(labs[a], w)
+            for b in eachindex(es)
+                cell = lpad(round(_err_cor(es[a], es[b], aw), digits = 3), w)
+                row *= b > a ? cell : _grey(cell)      # grey the redundant half
+            end
+            push!(lines, row)
+        end
+
+        return lines
+    end
+
+    println("available days: ", days)
+    println()
+
+    # Every (probe, day) combination side by side in one row
+    vars = var isa Symbol ? (var,) : var
+    _print_blocks([block(v, j) for v in vars for j in js])
+
+    return nothing
+end

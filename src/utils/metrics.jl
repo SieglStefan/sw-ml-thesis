@@ -23,15 +23,16 @@ maxdiff(x, y) = maximum(abs.(x .- y))
 
 
 # Extracts area weights of a grid from field
-function area_weights(spectral_grid::SpectralGrid)
-    
-    # Extract grid and angles
-    grid = spectral_grid.grid
+area_weights(spectral_grid::SpectralGrid) = area_weights(spectral_grid.grid)
+
+function area_weights(grid)
+
+    # Extract angles and rings
     Ω = get_solid_angles(grid)          # one solid angle per ring
     rings = eachring(grid)              # point indices of every ring
 
     # Prepare weights array (one entry per grid point)
-    w = zeros(Float32, spectral_grid.npoints)
+    w = zeros(Float32, get_npoints(grid))
 
     # Populate weights array with solid angles
     for (j, ring) in enumerate(rings)

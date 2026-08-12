@@ -6,20 +6,23 @@
 
 
 # Define experiment name
-EXP = "exp_A_04_arch"
+EXP = "exp_A_05_arch"
 
 
 
 # Define parameters for the experiment
 CONFIG = (;
     lw_target_type = :OBLW,
-    
+    seed           = 1000,
+
     lw_train_type  = :NeuralLW,
-    zscore_name    = "zscore_OBLW_default",
+    zscore_name    = "zscore_OBLW_365",
     output_form    = PlanckOutput(),
     
     eta0           = 1f-2,
     eta_decay      = 0.7f0,
+
+    t_spinup       = Day(365),
 
     n_ic           = 5,
     n_traj         = 100,
@@ -44,5 +47,5 @@ experiments = [
     (; name = "NLW_H3_W128", n_hidden = 3, width = 128, CONFIG...),
 
     # 3: activation function: gelu
-    (; name = "NLW_gelu", act = gelu, CONFIG...),
+    (; name = "NLW_gelu", act = Lux.gelu, CONFIG...),
 ]

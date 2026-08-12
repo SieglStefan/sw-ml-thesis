@@ -1,0 +1,41 @@
+[general]
+created = 2026-08-11T18:10:45.805Z
+experiment = "exp_A_08_nsteps_smaller"
+julia = "1.10.10"
+name = "Steps1_Gap59_stab"
+sw_vers = "0.21.1+DEV"
+
+[grid]
+grid_type = "OctahedralGaussianGrid"
+nlayers = 8
+trunc = 31
+
+[lw_scheme]
+act = "gelu_tanh"
+def_co2 = 280.0
+def_land_em = 0.9800000190734863
+def_ocean_em = 0.9800000190734863
+inputs = ["T", "Ts", "lat"]
+n_hidden = 2
+n_in = 10
+n_out = 21
+output_form = "PlanckOutput"
+scheme = "NeuralLW"
+width = 32
+zscore_stats = "zscore_OBLW_365"
+
+[rollout]
+em_land = 0.9800000190734863
+em_ocean = 0.9800000190734863
+metrics = ["rmse", "bias", "maxdiff", "mean"]
+model = "PrimitiveWetModel"
+probes = ["T", "olw", "slwd"]
+reference = "OBLW_spinup_365"
+
+[sampling]
+heatmap_days = [30, 90, 180, 365]
+heatmap_traj = 1
+max_horizon = 365
+n_traj = 12
+rollout_t = 365
+start_days = [0, 30, 61, 91, 122, 152, 182, 213, 243, 274, 304, 335]
